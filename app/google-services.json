@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "874926598136",
+    "firebase_url": "https://mikommeorer.firebaseio.com",
+    "project_id": "mikommeorer",
+    "storage_bucket": "mikommeorer.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:874926598136:android:534bb8a2b889bd06",
+        "android_client_info": {
+          "package_name": "com.example.alon.mikommeorer"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "874926598136-7qeac0sv2fsghb3v3ihov67j52ecpu4l.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC9ogIp3YvFY1YwKrvpQfMJY5Wo6RjUQR8"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
