@@ -29,7 +29,10 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:background="@drawable/trans_white_rectangle"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp">
             
             <TextView
                 android:layout_width="match_parent"
@@ -38,14 +41,27 @@
                 android:textColor="#fff"
                 android:textSize="18sp"
                 android:textStyle="bold"
-                android:layout_marginBottom="5dp"/>
+                android:layout_marginBottom="5dp"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:paddingTop="10dp"/>
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Just a few details to get you started"
                 android:textColor="#fff"
-                android:textSize="12sp" />
+                android:textSize="12sp"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"/>
+            
+            <AutoCompleteTextView
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:hint="Email"
+                android:background="@drawable/rounded_white"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="15dp"/>
             
         </LinearLayout>
         
