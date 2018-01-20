@@ -6,12 +6,12 @@
     android:layout_height="match_parent"
     tools:context="com.example.alon.mikommeorer.Register">
 
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:src="@drawable/background"
-        android:scaleType="centerCrop"
-        android:id="@+id/FormBack" />
+    <!--<ImageView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:src="@drawable/background"-->
+        <!--android:scaleType="centerCrop"-->
+        <!--android:id="@+id/FormBack" />-->
 
     <ImageView
         android:layout_width="match_parent"
@@ -87,17 +87,20 @@
                 android:inputType="textPassword"
                 android:id="@+id/userPassword"
                 android:layout_marginBottom="10dp"/>
-
-            <RadioButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="I agree to the Terms and Conditions"
-                android:textColor="#fff"
-                android:textSize="11sp"
-                android:button="@drawable/radio_button"
-                android:layout_gravity="center"
-                android:paddingLeft="5dp"/>
             
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:textColor="#fff"
+                android:text="Register"
+                android:textStyle="normal"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:layout_marginBottom="16dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/register_button"
+                android:layout_gravity="center"/>
+
         </LinearLayout>
         
     </ScrollView>
