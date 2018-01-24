@@ -5,7 +5,6 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -18,7 +17,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
-public class Register extends AppCompatActivity implements View.OnClickListener {
+public class Login extends AppCompatActivity implements View.OnClickListener {
     Button btnLogin;
     AutoCompleteTextView email,password;
     TextView signUp, forgotPass;
@@ -47,22 +46,22 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
 
         //Check already session , if ok-> DashBoard
         if(firebaseAuth.getCurrentUser() != null)
-            startActivity(new Intent(Register.this,DashBoard.class));
+            startActivity(new Intent(Login.this,DashBoard.class));
     }
 
     @Override
     public void onClick(View view) {
         if(view.getId() == R.id.login_btn_forgot_password)
         {
-            startActivity(new Intent(Register.this,ForgotPassword.class));
+            startActivity(new Intent(Login.this,ForgotPassword.class));
             finish();
         }
         else if(view.getId() == R.id.login_btn_signup)
         {
-            startActivity(new Intent(Register.this,SignUp.class));
+            startActivity(new Intent(Login.this,SignUp.class));
             finish();
         }
-        else if(view.getId() == R.id.login_btn_login)
+        else if(view.getId() == R.id.login_btn_login && password!=null)
         {
             loginUser(email.getText().toString(),password.getText().toString());
         }
@@ -81,7 +80,7 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
                             }
                         }
                         else{
-                            startActivity(new Intent(Register.this,DashBoard.class));
+                            startActivity(new Intent(Login.this,DashBoard.class));
                         }
                     }
                 });
