@@ -61,7 +61,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
             startActivity(new Intent(Login.this,SignUp.class));
             finish();
         }
-        else if(view.getId() == R.id.login_btn_login && password!=null)
+        else if(view.getId() == R.id.login_btn_login && password.getText()!=null && email.getText()!=null)
         {
             loginUser(email.getText().toString(),password.getText().toString());
         }
@@ -76,7 +76,11 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                         {
                             if(password.length() < 6)
                             {
-                                Toast.makeText(activity_main.getContext(), "pass must be more than 6 chars", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(activity_main.getContext(), "password must be more than 6 chars", Toast.LENGTH_SHORT).show();
+                            }
+                            if(!task.isSuccessful())
+                            {
+                                Toast.makeText(activity_main.getContext(),"Error: "+ task.getException(),Toast.LENGTH_SHORT).show();
                             }
                         }
                         else{

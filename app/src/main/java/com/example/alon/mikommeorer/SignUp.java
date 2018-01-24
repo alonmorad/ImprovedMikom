@@ -56,7 +56,7 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener {
             startActivity(new Intent(SignUp.this,ForgotPassword.class));
             finish();
         }
-        else if(view.getId() == R.id.btn_register){
+        else if(view.getId() == R.id.btn_register && input_email.getText()!=null && input_pass.getText()!=null){
             signUpUser(input_email.getText().toString(),input_pass.getText().toString());
         }
 
