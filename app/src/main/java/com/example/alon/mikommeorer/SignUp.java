@@ -1,5 +1,6 @@
 package com.example.alon.mikommeorer;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.annotation.NonNull;
@@ -19,12 +20,14 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
+import dmax.dialog.SpotsDialog;
+
 public class SignUp extends AppCompatActivity implements View.OnClickListener {
     Button sign_up;
     TextView btnLogin,btnForgotPass;
     EditText input_email,input_pass;
     RelativeLayout activity_sign_up;
-    ProgressDialog progressDialog;
+    AlertDialog alertDialog;
 
     private FirebaseAuth auth;
 
@@ -75,20 +78,19 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener {
                 Toast.makeText(this, "Please enter Password", Toast.LENGTH_SHORT).show();
                 return;
             }
-            else
             signUpUser(input_email.getText().toString(),input_pass.getText().toString());
         }
 
     }
 
     private void signUpUser(String email, String password) { //method for putting user data in firebase
-        progressDialog.setMessage("Registering User...");
-        progressDialog.show();
+        alertDialog=new SpotsDialog(SignUp.this,R.style.Sign_Up);
+        alertDialog.show();
         auth.createUserWithEmailAndPassword(email,password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        progressDialog.dismiss();
+                        alertDialog.dismiss();
                         if (task.isSuccessful()) {
                             Toast.makeText(SignUp.this, "Registered Successfully", Toast.LENGTH_SHORT).show();
                             finish();

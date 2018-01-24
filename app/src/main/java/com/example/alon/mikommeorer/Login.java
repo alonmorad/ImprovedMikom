@@ -1,5 +1,6 @@
 package com.example.alon.mikommeorer;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.annotation.NonNull;
@@ -10,6 +11,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -19,12 +21,14 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
+import dmax.dialog.SpotsDialog;
+
 public class Login extends AppCompatActivity implements View.OnClickListener {
     Button btnLogin;
     AutoCompleteTextView email,password;
     TextView signUp, forgotPass;
     RelativeLayout activity_main;
-    ProgressDialog progressDialog;
+    AlertDialog alertDialog;
     private FirebaseAuth firebaseAuth;
 
     @Override
@@ -80,19 +84,18 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                 Toast.makeText(this, "Please enter Password", Toast.LENGTH_SHORT).show();
                 return;
             }
-            else
             loginUser(email.getText().toString(),password.getText().toString());
         }
     }
 
     private void loginUser(String email, final String password) {
-        progressDialog.setMessage("Login...");
-        progressDialog.show();
+        alertDialog=new SpotsDialog(Login.this,R.style.Login);
+        alertDialog.show();
         firebaseAuth.signInWithEmailAndPassword(email,password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        progressDialog.dismiss();
+                        alertDialog.dismiss();
                         if (task.isSuccessful())
                         {
                             finish();
