@@ -1,9 +1,11 @@
 package com.example.alon.mikommeorer;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -22,6 +24,7 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener {
     TextView btnLogin,btnForgotPass;
     EditText input_email,input_pass;
     RelativeLayout activity_sign_up;
+    ProgressDialog progressDialog;
 
     private FirebaseAuth auth;
 
@@ -44,6 +47,7 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener {
         btnForgotPass.setOnClickListener(this);
 
         auth = FirebaseAuth.getInstance();
+
     }
 
     @Override
@@ -56,23 +60,43 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener {
             startActivity(new Intent(SignUp.this,ForgotPassword.class));
             finish();
         }
-        else if(view.getId() == R.id.btn_register && input_email.getText()!=null && input_pass.getText()!=null){
+        else if(view.getId() == R.id.btn_register){
+            String email=input_email.getText().toString().trim();
+            String password=input_pass.getText().toString().trim();
+
+            if (TextUtils.isEmpty(email))
+            {
+                Toast.makeText(this, "Please enter email", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            if (TextUtils.isEmpty(password))
+            {
+                Toast.makeText(this, "Please enter Password", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            else
             signUpUser(input_email.getText().toString(),input_pass.getText().toString());
         }
 
     }
 
     private void signUpUser(String email, String password) { //method for putting user data in firebase
+        progressDialog.setMessage("Registering User...");
+        progressDialog.show();
         auth.createUserWithEmailAndPassword(email,password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        if(!task.isSuccessful())
-                        {
-                            Toast.makeText(activity_sign_up.getContext(),"Error: "+task.getException(),Toast.LENGTH_SHORT).show();
+                        progressDialog.dismiss();
+                        if (task.isSuccessful()) {
+                            Toast.makeText(SignUp.this, "Registered Successfully", Toast.LENGTH_SHORT).show();
+                            finish();
+                            startActivity(new Intent(getApplicationContext(),Login.class));
                         }
-                        else{
-                            Toast.makeText(activity_sign_up.getContext(),"Register success! ",Toast.LENGTH_SHORT).show();
+                        else
+                        {
+                            Toast.makeText(SignUp.this, "Could not register. please try again", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });

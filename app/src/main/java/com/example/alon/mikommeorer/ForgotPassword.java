@@ -1,9 +1,11 @@
 package com.example.alon.mikommeorer;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -21,6 +23,7 @@ public class ForgotPassword extends AppCompatActivity implements View.OnClickLis
     private Button btnResetPass;
     private TextView btnBack;
     private RelativeLayout activity_forgot;
+    ProgressDialog progressDialog;
 
     private FirebaseAuth auth;
 
@@ -52,22 +55,33 @@ public class ForgotPassword extends AppCompatActivity implements View.OnClickLis
         }
         else  if(view.getId() == R.id.forgot_btn_reset)
         {
+            String Email=input_email.getText().toString().trim();
+
+            if (TextUtils.isEmpty(Email))
+            {
+                Toast.makeText(this, "Please enter email", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            else
             resetPassword(input_email.getText().toString());
         }
 
     }
 
     private void resetPassword( final String email) {
+        progressDialog.setMessage("Sending Mail...");
+        progressDialog.show();
         auth.sendPasswordResetEmail(email)
                 .addOnCompleteListener(this, new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
+                        progressDialog.dismiss();
                         if(task.isSuccessful())
                         {
                             Toast.makeText(activity_forgot.getContext(),"We have sent password to email: "+email ,Toast.LENGTH_SHORT).show();
                         }
                         else{
-                            Toast.makeText(activity_forgot.getContext(),"Failed to send password",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(activity_forgot.getContext(),"Failed to send mail",Toast.LENGTH_SHORT).show();
                         }
                     }
                 });

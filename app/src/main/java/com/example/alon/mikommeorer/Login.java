@@ -1,9 +1,11 @@
 package com.example.alon.mikommeorer;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.AutoCompleteTextView;
@@ -22,6 +24,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
     AutoCompleteTextView email,password;
     TextView signUp, forgotPass;
     RelativeLayout activity_main;
+    ProgressDialog progressDialog;
     private FirebaseAuth firebaseAuth;
 
     @Override
@@ -61,31 +64,42 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
             startActivity(new Intent(Login.this,SignUp.class));
             finish();
         }
-        else if(view.getId() == R.id.login_btn_login && password.getText()!=null && email.getText()!=null)
+        else if(view.getId() == R.id.login_btn_login)
         {
+            String email2=email.getText().toString().trim();
+            String password2=password.getText().toString().trim();
+
+            if (TextUtils.isEmpty(email2))
+            {
+                Toast.makeText(this, "Please enter email", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            if (TextUtils.isEmpty(password2))
+            {
+                Toast.makeText(this, "Please enter Password", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            else
             loginUser(email.getText().toString(),password.getText().toString());
         }
     }
 
     private void loginUser(String email, final String password) {
+        progressDialog.setMessage("Login...");
+        progressDialog.show();
         firebaseAuth.signInWithEmailAndPassword(email,password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        if(!task.isSuccessful())
+                        progressDialog.dismiss();
+                        if (task.isSuccessful())
                         {
-                            if(password.length() < 6)
-                            {
-                                Toast.makeText(activity_main.getContext(), "password must be more than 6 chars", Toast.LENGTH_SHORT).show();
-                            }
-                            if(!task.isSuccessful())
-                            {
-                                Toast.makeText(activity_main.getContext(),"Error: "+ task.getException(),Toast.LENGTH_SHORT).show();
-                            }
+                            finish();
+                            startActivity(new Intent(getApplicationContext(),DashBoard.class));
                         }
-                        else{
-                            startActivity(new Intent(Login.this,DashBoard.class));
-                        }
+                        else
+                            Toast.makeText(Login.this, "Wrong Email or Password. Please try again", Toast.LENGTH_SHORT).show();
                     }
                 });
 }}
