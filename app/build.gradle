@@ -29,5 +29,6 @@ dependencies {
     compile 'com.google.firebase:firebase-auth:11.8.0'
     compile 'com.github.d-max:spots-dialog:0.7@aar' //loading dots library
     compile 'com.h6ah4i.android.widget.verticalseekbar:verticalseekbar:0.7.2' //vertical seekbar library (for maps)
+    compile 'com.google.android.gms:play-services-location:11.8.0'
 }
 apply plugin: 'com.google.gms.google-services'
