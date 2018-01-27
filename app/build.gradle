@@ -26,7 +26,9 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
-    compile 'com.google.firebase:firebase-auth:11.8.0'
+    compile 'com.google.firebase:firebase-auth:11.8.0' //firebase auth
+    compile 'com.google.firebase:firebase-database:11.8.0' //firebase database
+    compile 'com.firebase:geofire-android:2.2.0' //geofire
     compile 'com.github.d-max:spots-dialog:0.7@aar' //loading dots library
     compile 'com.h6ah4i.android.widget.verticalseekbar:verticalseekbar:0.7.2' //vertical seekbar library (for maps)
     compile 'com.google.android.gms:play-services-location:11.8.0'

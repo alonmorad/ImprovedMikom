@@ -4,15 +4,16 @@ import android.*;
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.location.Location;
-import android.location.LocationListener;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.telecom.Connection;
+import android.util.Log;
 import android.widget.Toast;
 
+import com.firebase.geofire.GeoFire;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -23,7 +24,10 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks,
@@ -32,13 +36,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private GoogleMap mMap;
     private GoogleApiClient googleApiClient;
-    private Location LastLocation;
+    private Location lastLocation;
     private LocationRequest mLocationRequest;
     private  static  final int MY_PERMISSION_REQUEST_CODE= 2980;
     private  static  final int PLAY_SERVICES_RESOLUTION_REQUEST=300193;
     private static int UPDATE_INTERVAL=5000;
     private static int FASTEST_INTERVAL=3000;
     private static int DISPLACEMENT=10;
+
+    DatabaseReference ref;
+    GeoFire geoFire;
 
 
     @Override
@@ -49,7 +56,29 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+        ref=FirebaseDatabase.getInstance().getReference("MyLocation");
+        geoFire=new GeoFire(ref);
+
         setUpLocation();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case MY_PERMISSION_REQUEST_CODE:
+                if (grantResults.length>0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
+                {
+                    if (checkPlayServices())
+                    {
+                        buildGoogleApiClient();
+                        createLocationRequest();
+                        displayLocation();
+                    }
+                }
+                break;
+        }
+
     }
 
     private void setUpLocation() {
@@ -68,8 +97,28 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             {
                 buildGoogleApiClient();
                 createLocationRequest();
+                displayLocation();
             }
         }
+    }
+
+    private void displayLocation() {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED )
+        {
+            return;
+        }
+        lastLocation=LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
+        if (lastLocation!=null)
+        {
+            double latitude=lastLocation.getLatitude();
+            double longitude=lastLocation.getLongitude();
+
+            Log.d("Alon", String.format("Your location was changed: %f / %f ", latitude,longitude));
+        }
+        else
+            Log.d("Alon", "Can't get your location");
+
     }
 
     private void createLocationRequest() {
@@ -116,32 +165,29 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     @Override
     public void onLocationChanged(Location location) {
-
-    }
-
-    @Override
-    public void onStatusChanged(String s, int i, Bundle bundle) {
-
-    }
-
-    @Override
-    public void onProviderEnabled(String s) {
-
-    }
-
-    @Override
-    public void onProviderDisabled(String s) {
-
+        lastLocation=location;
+        displayLocation();
     }
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
+        displayLocation();
+        startLocationUpdates();
+    }
+
+    private void startLocationUpdates() {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED )
+        {
+            return;
+        }
+        LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, mLocationRequest, this);
 
     }
 
     @Override
     public void onConnectionSuspended(int i) {
-
+        googleApiClient.connect();
     }
 
     @Override
