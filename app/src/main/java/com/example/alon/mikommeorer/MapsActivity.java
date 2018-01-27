@@ -14,6 +14,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.firebase.geofire.GeoFire;
+import com.firebase.geofire.GeoLocation;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -25,7 +26,9 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -46,6 +49,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     DatabaseReference ref;
     GeoFire geoFire;
+    Marker myCurrent;
 
 
     @Override
@@ -111,8 +115,26 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         lastLocation=LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
         if (lastLocation!=null)
         {
-            double latitude=lastLocation.getLatitude();
-            double longitude=lastLocation.getLongitude();
+            final double latitude=lastLocation.getLatitude();
+            final double longitude=lastLocation.getLongitude();
+
+            //Update to Firebase
+            geoFire.setLocation("You", new GeoLocation(latitude, longitude),
+                    new GeoFire.CompletionListener() {
+                        @Override
+                        public void onComplete(String key, DatabaseError error) {
+                            //add Marker
+                            if (myCurrent!=null)
+                                myCurrent.remove(); //remove old Marker
+                            myCurrent=mMap.addMarker(new MarkerOptions()
+                                                    .position(new LatLng(latitude,longitude))
+                                                    .title("You"));
+                            //Move Camera to this position
+                            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latitude,longitude), 12.0f));
+                        }
+                    });
+
+
 
             Log.d("Alon", String.format("Your location was changed: %f / %f ", latitude,longitude));
         }
