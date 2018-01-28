@@ -226,13 +226,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
             @Override
             public void onKeyEntered(String key, GeoLocation location) {
-                sendNotification("Alon", String.format("%s entered the chosen area",key));
+                sendNotification("MikoMeorer", String.format("%s entered the chosen area",key));
             }
 
             @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
             @Override
             public void onKeyExited(String key) {
-                sendNotification("Alon", String.format("%s in no longer in the chosen area",key));
+                sendNotification("MikoMeorer", String.format("%s in no longer in the chosen area",key));
             }
 
             @Override
