@@ -2,16 +2,24 @@ package com.example.alon.mikommeorer;
 
 import android.*;
 import android.Manifest;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Location;
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.telecom.Connection;
 import android.util.Log;
+import android.widget.SeekBar;
 import android.widget.Toast;
 
 import com.firebase.geofire.GeoFire;
@@ -35,6 +43,9 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.h6ah4i.android.widget.verticalseekbar.VerticalSeekBar;
+
+import java.util.Random;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks,
@@ -54,6 +65,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     DatabaseReference ref;
     GeoFire geoFire;
     Marker myCurrent;
+    VerticalSeekBar mSeekBar;
 
 
     @Override
@@ -67,6 +79,23 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         ref=FirebaseDatabase.getInstance().getReference("MyLocation");
         geoFire=new GeoFire(ref);
+        mSeekBar=(VerticalSeekBar)findViewById(R.id.VerticalSeekBar);
+        mSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+                mMap.animateCamera(CameraUpdateFactory.zoomTo(i),2000,null);
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
 
         setUpLocation();
     }
@@ -194,19 +223,21 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         GeoQuery geoQuery = geoFire.queryAtLocation(new GeoLocation(notification_area.latitude, notification_area.longitude),
                 0.5f);
         geoQuery.addGeoQueryEventListener(new GeoQueryEventListener() {
+            @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
             @Override
             public void onKeyEntered(String key, GeoLocation location) {
-                
+                sendNotification("Alon", String.format("%s entered the chosen area",key));
             }
 
+            @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
             @Override
             public void onKeyExited(String key) {
-
+                sendNotification("Alon", String.format("%s in no longer in the chosen area",key));
             }
 
             @Override
             public void onKeyMoved(String key, GeoLocation location) {
-
+                Log.d("MOVE", String.format("%s moved within the chosen area [%f/%f]", key, location.latitude, location.latitude));
             }
 
             @Override
@@ -216,9 +247,27 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
             @Override
             public void onGeoQueryError(DatabaseError error) {
-
+                Log.e("ERROR", "" + error);
             }
         });
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
+    private void sendNotification(String title, String content) {
+        Notification.Builder builder=new Notification.Builder(this)
+                .setSmallIcon(R.mipmap.ic_launcher_round)
+                .setContentTitle(title)
+                .setContentText(content);
+        NotificationManager manager=(NotificationManager)this.getSystemService(Context.NOTIFICATION_SERVICE);
+        Intent intent=new Intent(this, MapsActivity.class);
+        PendingIntent contentIntent=PendingIntent.getActivity(this,0,intent,PendingIntent.FLAG_IMMUTABLE);
+        builder.setContentIntent(contentIntent);
+        Notification notification=builder.build();
+        notification.flags |= Notification.FLAG_AUTO_CANCEL;
+        notification.defaults |= Notification.DEFAULT_SOUND;
+
+        manager.notify(new Random().nextInt(),notification);
+
     }
 
     @Override
