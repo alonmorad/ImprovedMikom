@@ -65,7 +65,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     GeoFire geoFire;
     Marker myCurrent;
     VerticalSeekBar mSeekBar;
-//    AlarmManager alarmManager;
 
 
     @Override
