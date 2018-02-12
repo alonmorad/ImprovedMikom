@@ -42,6 +42,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.h6ah4i.android.widget.verticalseekbar.VerticalSeekBar;
 
 import java.util.Random;
@@ -62,6 +63,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private static int DISPLACEMENT = 10;
 
     DatabaseReference ref;
+    FirebaseFirestore firebaseFirestore;
     GeoFire geoFire;
     Marker myCurrent;
     VerticalSeekBar mSeekBar;
@@ -77,6 +79,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mapFragment.getMapAsync(this);
 
         ref = FirebaseDatabase.getInstance().getReference("MyLocation");
+        firebaseFirestore=FirebaseFirestore.getInstance();
         geoFire = new GeoFire(ref);
         mSeekBar = (VerticalSeekBar) findViewById(R.id.VerticalSeekBar);
         mSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -316,5 +319,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
 
         return cm.getActiveNetworkInfo() != null;
+    }
+    private void writeNewStation(double longitude, double latitude, String station_name, String station_description) {
+        Stations user = new Stations(longitude, latitude, station_name,station_description);
+
+        firebaseFirestore.
     }
 }
