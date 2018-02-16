@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="com.example.alon.mikommeorer.StationSearch">
-    
+
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -20,4 +20,5 @@
         android:id="@+id/listViewLines"
         android:layout_weight="1"
         />
+
 </LinearLayout>

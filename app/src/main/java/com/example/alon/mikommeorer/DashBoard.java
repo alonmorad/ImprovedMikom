@@ -71,7 +71,7 @@ public class DashBoard extends AppCompatActivity implements View.OnClickListener
             logoutUser();
         else
             if (view.getId()==R.id.dashboard_btn_toapp)
-                startActivity(new Intent(DashBoard.this,MapsActivity.class));
+                startActivity(new Intent(DashBoard.this,StationSearch.class));
 
 
     }

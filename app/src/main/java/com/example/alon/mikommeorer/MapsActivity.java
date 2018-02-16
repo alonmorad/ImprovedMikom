@@ -79,7 +79,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mapFragment.getMapAsync(this);
 
         ref = FirebaseDatabase.getInstance().getReference("MyLocation");
-        firebaseFirestore=FirebaseFirestore.getInstance();
+        firebaseFirestore = FirebaseFirestore.getInstance();
         geoFire = new GeoFire(ref);
         mSeekBar = (VerticalSeekBar) findViewById(R.id.VerticalSeekBar);
         mSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -151,8 +151,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         @Override
                         public void onComplete(String key, DatabaseError error) {
                             //add Marker
-                            if (myCurrent != null)
-                                myCurrent.remove(); //remove old Marker
+//                            if (myCurrent != null)
+//                                myCurrent.remove(); //remove old Marker
                             myCurrent = mMap.addMarker(new MarkerOptions()
                                     .position(new LatLng(latitude, longitude))
                                     .title("You"));
@@ -317,12 +317,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private boolean isNetworkConnected() { //for wifi and data
         ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-
         return cm.getActiveNetworkInfo() != null;
-    }
-    private void writeNewStation(double longitude, double latitude, String station_name, String station_description) {
-        Stations user = new Stations(longitude, latitude, station_name,station_description);
-
-        firebaseFirestore.
     }
 }
