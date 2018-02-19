@@ -18,6 +18,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.SeekBar;
 import android.widget.Toast;
 
@@ -39,12 +40,21 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.GeoPoint;
 import com.h6ah4i.android.widget.verticalseekbar.VerticalSeekBar;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback,
@@ -61,12 +71,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private static int UPDATE_INTERVAL = 5000;
     private static int FASTEST_INTERVAL = 3000;
     private static int DISPLACEMENT = 10;
+    private MapServices services;
+
 
     DatabaseReference ref;
     FirebaseFirestore firebaseFirestore;
     GeoFire geoFire;
     Marker myCurrent;
-    VerticalSeekBar mSeekBar;
+
 
 
     @Override
@@ -81,7 +93,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         ref = FirebaseDatabase.getInstance().getReference("MyLocation");
         firebaseFirestore = FirebaseFirestore.getInstance();
         geoFire = new GeoFire(ref);
-        mSeekBar = (VerticalSeekBar) findViewById(R.id.VerticalSeekBar);
+        VerticalSeekBar mSeekBar = findViewById(R.id.VerticalSeekBar);
         mSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
@@ -145,7 +157,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             final double latitude = lastLocation.getLatitude();
             final double longitude = lastLocation.getLongitude();
 
-            //Update to Firebase
+            //Update to Firebase (not cloud)
             geoFire.setLocation("You", new GeoLocation(latitude, longitude),
                     new GeoFire.CompletionListener() {
                         @Override
@@ -156,6 +168,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                             myCurrent = mMap.addMarker(new MarkerOptions()
                                     .position(new LatLng(latitude, longitude))
                                     .title("You"));
+                            mMap.addMarker(new MarkerOptions()
+                            .position(new LatLng(32.1648052,34.8266926)));
                             //Move Camera to this position
                             mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latitude, longitude), 12.0f));
                         }
@@ -203,6 +217,23 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         toastMakerForGPSandInternet();
+        Callback callback = new Callback<List<Station>>() {
+            @Override
+            public void onCallback(List<Station> obj) {
+
+            }
+
+            @Override
+            public void onCallback(List<Court> obj) {
+                if (getContext() == null)
+                    return;
+                for (Court court : obj) {
+                    // Add a marker for each court
+                    mMap.addMarker(court.toMarkerOptions(getContext()));
+                }
+            }
+        };
+        services.getCourts(callback);
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
             //    ActivityCompat#requestPermissions

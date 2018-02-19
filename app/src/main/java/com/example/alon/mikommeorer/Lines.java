@@ -6,7 +6,7 @@ package com.example.alon.mikommeorer;
 
 public class Lines {
     private int numofstations;
-    private Stations [] stations= new Stations[numofstations];
+    private Station[] stations= new Station[numofstations];
     private int kav_number;
     private String starttime;
     private String endtime;
@@ -19,11 +19,11 @@ public class Lines {
         this.numofstations = numofstations;
     }
 
-    public Stations[] getStations() {
+    public Station[] getStations() {
         return stations;
     }
 
-    public void setStations(Stations[] stations) {
+    public void setStations(Station[] stations) {
         this.stations = stations;
     }
 
@@ -53,7 +53,7 @@ public class Lines {
 
 
 
-    public Lines(int numofstations, Stations[] stations, int kav_number, String starttime, String endtime) {
+    public Lines(int numofstations, Station[] stations, int kav_number, String starttime, String endtime) {
         this.numofstations = numofstations;
         this.stations = stations;
         this.kav_number = kav_number;
