@@ -57,6 +57,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+import static java.security.AccessController.getContext;
+
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
@@ -219,21 +221,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         toastMakerForGPSandInternet();
         Callback callback = new Callback<List<Station>>() {
             @Override
-            public void onCallback(List<Station> obj) {
-
-            }
-
-            @Override
-            public void onCallback(List<Court> obj) {
-                if (getContext() == null)
+            public void onCallback(List<Station> stations) {
+                if (getContext()==null)
                     return;
-                for (Court court : obj) {
-                    // Add a marker for each court
-                    mMap.addMarker(court.toMarkerOptions(getContext()));
+                for (Station station: stations)
+                {
+                    mMap.addMarker(station.toMarkerOptions(getContext()));
                 }
             }
         };
-        services.getCourts(callback);
+        services.getStations(callback);
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
             //    ActivityCompat#requestPermissions

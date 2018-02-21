@@ -27,11 +27,11 @@ public class MapServices {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
-                            List<Station> courts = new ArrayList<>();
+                            List<Station> stations = new ArrayList<>();
                             for (DocumentSnapshot document : task.getResult()) {
-                                courts.add(document.toObject(Station.class));
+                                stations.add(document.toObject(Station.class));
                             }
-                            callback.onCallback(courts);
+                            callback.onCallback(stations);
                         } else {
                             Log.d(TAG, "Error getting documents: ", task.getException());
                         }

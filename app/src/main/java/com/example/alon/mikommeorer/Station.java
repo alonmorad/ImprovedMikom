@@ -8,6 +8,8 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.firestore.GeoPoint;
 
+import java.security.AccessControlContext;
+
 /**
  * Created by alonm on 04/02/2018.
  */
@@ -51,7 +53,7 @@ public class Station {
         return new LatLng(location.getLatitude(),location.getLongitude());
     }
 
-    public MarkerOptions toMarkerOptions(Context context) {
+    public MarkerOptions toMarkerOptions(AccessControlContext context) {
         return new MarkerOptions()
                 .position(getLocationLatLng())
                 .title(getName())
