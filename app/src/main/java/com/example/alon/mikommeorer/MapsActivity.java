@@ -86,6 +86,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        services = new MapServices();
         setContentView(R.layout.activity_maps);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -165,8 +166,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         @Override
                         public void onComplete(String key, DatabaseError error) {
                             //add Marker
-//                            if (myCurrent != null)
-//                                myCurrent.remove(); //remove old Marker
+                           if (myCurrent != null)
+                                myCurrent.remove(); //remove old Marker
                             myCurrent = mMap.addMarker(new MarkerOptions()
                                     .position(new LatLng(latitude, longitude))
                                     .title("You"));

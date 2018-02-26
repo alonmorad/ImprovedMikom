@@ -15,14 +15,19 @@ import java.security.AccessControlContext;
  */
 
 public class Station {
+    private String description;
     private GeoPoint location;
     private String name;
-    private String description;
+
 
     public Station(GeoPoint location, String name, String description) {
         this.location = location;
         this.name = name;
         this.description = description;
+    }
+
+    public Station(){
+
     }
 
     public GeoPoint getLocation() {
