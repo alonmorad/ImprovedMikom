@@ -16,14 +16,16 @@ import java.security.AccessControlContext;
 
 public class Station {
     private String description;
+    private String linenumber;
     private GeoPoint location;
     private String name;
 
 
-    public Station(GeoPoint location, String name, String description) {
+    public Station(GeoPoint location, String name, String description, String linenumber) {
         this.location = location;
         this.name = name;
         this.description = description;
+        this.linenumber=linenumber;
     }
 
     public Station(){
@@ -57,6 +59,13 @@ public class Station {
     public LatLng getLocationLatLng() {
         return new LatLng(location.getLatitude(),location.getLongitude());
     }
+    public String getLinenumber() {
+        return linenumber;
+    }
+
+    public void setLinenumber(String linenumber) {
+        this.linenumber = linenumber;
+    }
 
     public MarkerOptions toMarkerOptions(AccessControlContext context) {
         return new MarkerOptions()
@@ -71,6 +80,7 @@ public class Station {
                 "location=" + location +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
+                ", linenumber='" + linenumber + '\'' +
                 '}';
     }
 }

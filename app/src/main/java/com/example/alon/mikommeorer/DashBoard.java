@@ -1,7 +1,6 @@
 package com.example.alon.mikommeorer;
 
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -56,6 +55,7 @@ public class DashBoard extends AppCompatActivity implements View.OnClickListener
             txtWelcome.setText("Welcome , " + auth.getCurrentUser().getEmail());
     }
 
+
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.dashboard_btn_change_pass) {
@@ -71,7 +71,7 @@ public class DashBoard extends AppCompatActivity implements View.OnClickListener
             logoutUser();
         else
             if (view.getId()==R.id.dashboard_btn_toapp)
-                startActivity(new Intent(DashBoard.this,StationSearch.class));
+                startActivity(new Intent(DashBoard.this,LineSearch.class));
 
 
     }
@@ -91,6 +91,10 @@ public class DashBoard extends AppCompatActivity implements View.OnClickListener
                     Toast.makeText(DashBoard.this, "Password not changed. Please try again!", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    public void onBackPressed(){
+        //prevent from going back to login screen
     }
 
     private void logoutUser() {

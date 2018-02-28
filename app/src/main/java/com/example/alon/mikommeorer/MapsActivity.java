@@ -168,11 +168,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                             //add Marker
                            if (myCurrent != null)
                                 myCurrent.remove(); //remove old Marker
-                            myCurrent = mMap.addMarker(new MarkerOptions()
+                            /*myCurrent = mMap.addMarker(new MarkerOptions()
                                     .position(new LatLng(latitude, longitude))
                                     .title("You"));
                             mMap.addMarker(new MarkerOptions()
-                            .position(new LatLng(32.1648052,34.8266926)));
+                            .position(new LatLng(32.1648052,34.8266926)));*/
                             //Move Camera to this position
                             mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latitude, longitude), 12.0f));
                         }
@@ -219,6 +219,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+        final String linechoosed=getIntent().getExtras().getString("data"); //tells which line was chosed in the last activity
         toastMakerForGPSandInternet();
         Callback callback = new Callback<List<Station>>() {
             @Override
@@ -227,7 +228,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     return;
                 for (Station station: stations)
                 {
-                    mMap.addMarker(station.toMarkerOptions(getContext()));
+                    if (station.getLinenumber().equals(linechoosed))
+                    {
+                        mMap.addMarker(station.toMarkerOptions(getContext()));
+                    }
                 }
             }
         };

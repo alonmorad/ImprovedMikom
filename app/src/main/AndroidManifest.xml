@@ -51,9 +51,10 @@
         <activity
             android:name=".MapsActivity"
             android:label="@string/title_activity_maps" />
-        <activity android:name=".StationSearch"
-            android:windowSoftInputMode="stateHidden">
-        </activity>
+        <activity
+            android:name=".LineSearch"
+            android:windowSoftInputMode="stateHidden"></activity>
+        <activity android:name=".StationSearch"></activity>
     </application>
 
 </manifest>
