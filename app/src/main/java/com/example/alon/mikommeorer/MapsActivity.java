@@ -247,6 +247,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             return;
         }
         mMap.setMyLocationEnabled(true);
+        final String stationchoosed=getIntent().getExtras().getString("stationchoosed");
         LatLng notification_area = new LatLng(32.1516661, 34.84833000000003); //house
 //        LatLng notification_area = new LatLng(32.1648052, 34.8266926); school
         mMap.addCircle(new CircleOptions()

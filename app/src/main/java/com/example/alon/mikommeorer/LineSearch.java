@@ -29,7 +29,7 @@ public class LineSearch extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 String lineChoosed=String.valueOf(adapterView.getItemAtPosition(i));
-                Intent intent=new Intent(LineSearch.this,MapsActivity.class);
+                Intent intent=new Intent(LineSearch.this,StationSearch.class);
                 intent.putExtra("data",lineChoosed);
                 startActivity(intent);
             }
