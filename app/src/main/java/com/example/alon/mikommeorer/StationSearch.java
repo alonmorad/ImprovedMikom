@@ -11,6 +11,8 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import java.util.List;
 
 import static java.security.AccessController.getContext;
@@ -20,6 +22,9 @@ public class StationSearch extends AppCompatActivity {
     private EditText etSearch;
     private ArrayAdapter<String> adapter;
     private StationServices services;
+    private double station_location_lat;
+    private double station_location_lng;
+    private String stationChoosed;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,10 +53,28 @@ public class StationSearch extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                String stationChoosed=String.valueOf(adapterView.getItemAtPosition(i));
+                stationChoosed=String.valueOf(adapterView.getItemAtPosition(i));
+                Callback callback = new Callback<List<Station>>() {
+                    @Override
+                    public void onCallback(List<Station> stations) {
+                        if (getContext()==null)
+                            return;
+                        for (Station station: stations)
+                        {
+                            if (station.getName().equals(stationChoosed))
+                            {
+                                station_location_lat=station.getLocation().getLatitude();
+                                station_location_lng=station.getLocation().getLongitude();
+                            }
+                        }
+                    }
+                };
+                services.getStations(callback);
                 Intent intent=new Intent(StationSearch.this,MapsActivity.class);
                 intent.putExtra("stationchoosed",stationChoosed);
                 intent.putExtra("data", linechoosed);
+                intent.putExtra("station_location_lat",station_location_lat);
+                intent.putExtra("station_location_lng",station_location_lng);
                 startActivity(intent);
             }
         });

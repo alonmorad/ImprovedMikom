@@ -223,6 +223,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         final String linechoosed=getIntent().getExtras().getString("data"); //tells which line was chosed in the last activity
         final String stationchoosed=getIntent().getExtras().getString("stationchoosed");
 
+
         toastMakerForGPSandInternet();
         Callback callback = new Callback<List<Station>>() {
             @Override
@@ -234,7 +235,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     if (station.getLinenumber().equals(linechoosed))
                     {
                         if (!station.getName().equals(stationchoosed))
-                        mMap.addMarker(station.toMarkerOptions(getContext()).alpha(0.5f));
+                        mMap.addMarker(station.toMarkerOptions(getContext()).alpha(0.70f));
                         else
                             mMap.addMarker(station.toMarkerOptions(getContext()));
                     }
@@ -262,9 +263,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             return;
         }
         mMap.setMyLocationEnabled(true);
-        LatLng notification_area = new LatLng(32.1516661, 34.84833000000003); //house
-//        LatLng notification_area = new LatLng(32.1648052, 34.8266926); school
-        ;
+        //house
+        double notif_lat=getIntent().getExtras().getDouble("station_location_lat");
+        double notif_lng=getIntent().getExtras().getDouble("station_location_lng");
+       LatLng notification_area = new LatLng(notif_lat,notif_lng);
         //geoquery, 0.5f=0.5k=500m, radius of circle
         GeoQuery geoQuery = geoFire.queryAtLocation(new GeoLocation(notification_area.latitude, notification_area.longitude),
                 0.5f);
