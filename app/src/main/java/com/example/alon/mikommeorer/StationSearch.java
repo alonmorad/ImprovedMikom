@@ -1,5 +1,6 @@
 package com.example.alon.mikommeorer;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -15,6 +16,8 @@ import com.google.android.gms.maps.model.LatLng;
 
 import java.util.List;
 
+import dmax.dialog.SpotsDialog;
+
 import static java.security.AccessController.getContext;
 
 public class StationSearch extends AppCompatActivity {
@@ -25,6 +28,7 @@ public class StationSearch extends AppCompatActivity {
     private double station_location_lat;
     private double station_location_lng;
     private String stationChoosed;
+    private AlertDialog alertDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

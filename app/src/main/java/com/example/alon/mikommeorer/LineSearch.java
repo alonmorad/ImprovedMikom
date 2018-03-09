@@ -1,5 +1,6 @@
 package com.example.alon.mikommeorer;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -10,6 +11,8 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
+
+import dmax.dialog.SpotsDialog;
 
 public class LineSearch extends AppCompatActivity {
     private ListView listView;

@@ -10,6 +10,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Location;
 import android.net.ConnectivityManager;
+import android.net.Uri;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -174,7 +175,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                             mMap.addMarker(new MarkerOptions()
                             .position(new LatLng(32.1648052,34.8266926)));*/
                             //Move Camera to this position
-                            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latitude, longitude), 12.0f));
+                            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latitude, longitude), 13.55f));
                         }
                     });
 
@@ -237,7 +238,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         if (!station.getName().equals(stationchoosed))
                         mMap.addMarker(station.toMarkerOptions(getContext()).alpha(0.65f));
                         else
-                            mMap.addMarker(station.toMarkerOptions(getContext()));
+                            mMap.addMarker(station.toMarkerOptions(getContext()).snippet("יעד"));
                     }
                     if (station.getName().equals(stationchoosed))
                     {
@@ -312,8 +313,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         PendingIntent contentIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_IMMUTABLE);
         builder.setContentIntent(contentIntent);
         Notification notification = builder.build();
-        notification.flags |= Notification.FLAG_AUTO_CANCEL | Notification.FLAG_INSISTENT | Notification.FLAG_ONGOING_EVENT;
-        notification.defaults |= Notification.DEFAULT_SOUND;
+        notification.flags |= Notification.FLAG_AUTO_CANCEL | Notification.FLAG_INSISTENT;
+        notification.sound= Uri.parse("android.resource://" + this.getPackageName() + "/" + R.raw.alarm_sound);
         notification.defaults |= Notification.DEFAULT_LIGHTS;
         notification.defaults |= Notification.DEFAULT_VIBRATE;
         manager.notify(new Random().nextInt(), notification);
