@@ -235,7 +235,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     if (station.getLinenumber().equals(linechoosed))
                     {
                         if (!station.getName().equals(stationchoosed))
-                        mMap.addMarker(station.toMarkerOptions(getContext()).alpha(0.70f));
+                        mMap.addMarker(station.toMarkerOptions(getContext()).alpha(0.65f));
                         else
                             mMap.addMarker(station.toMarkerOptions(getContext()));
                     }
