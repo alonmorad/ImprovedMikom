@@ -16,12 +16,12 @@ import java.util.List;
  * Created by alonm on 05/03/2018.
  */
 
-public class StationServices {
+public class ListBuilderServices {
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
     private final String TAG = "Document:";
 
-    public void getStations(final Callback<List<Station>> callback) {
-        db.collection("stations")
+    public void getStations(final Callback<List<Station>> callback, String userPick) {
+        db.collection("stations").whereEqualTo("linenumber",userPick)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
