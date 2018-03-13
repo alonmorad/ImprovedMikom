@@ -34,5 +34,6 @@ dependencies {
     compile 'com.google.firebase:firebase-firestore:11.8.0' //firestore
     //vertical seekbar library (for maps)
     compile 'com.google.android.gms:play-services-location:11.8.0'
+    compile 'com.yarolegovich:lovely-dialog:1.0.7'
 }
 apply plugin: 'com.google.gms.google-services'

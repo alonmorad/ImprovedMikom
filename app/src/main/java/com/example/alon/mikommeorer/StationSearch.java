@@ -36,15 +36,14 @@ public class StationSearch extends AppCompatActivity {
     private double station_location_lat;
     private double station_location_lng;
     private String stationChoosed;
-    AlertDialog alertDialog;
-    private final FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private AlertDialog alertDialog;
     private final String TAG = "Document:";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_station_search);
-        listView=(ListView)findViewById(R.id.listViewLines);
-        etSearch=(EditText)findViewById(R.id.etsearch);
+        listView=findViewById(R.id.listViewLines);
+        etSearch=findViewById(R.id.etsearch);
         services = new ListBuilderServices();
         stationPickServices=new StationPickServices();
         adapter=new ArrayAdapter<String>(this,R.layout.test,R.id.textView);
@@ -68,43 +67,31 @@ public class StationSearch extends AppCompatActivity {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 stationChoosed=String.valueOf(adapterView.getItemAtPosition(i));
                 Log.d("Stationname",  stationChoosed.toString());
-                /*Callback callback = new Callback<List<Station>>()
+                alertDialog=new SpotsDialog(StationSearch.this,R.style.StationSearch);
+                alertDialog.show();
+                Callback callback = new Callback<List<Station>>()
                 {
                     @Override
                     public void onCallback(List<Station> stations) {
+                        alertDialog.dismiss();
                         if (getContext()==null)
                             return;
                         for (Station station: stations)
                         {
                             station_location_lat=station.getLocation().getLatitude();
                             station_location_lng=station.getLocation().getLongitude();
+                            Intent intent=new Intent(StationSearch.this,MapsActivity.class);
+                            Log.d("locationstation", String.format("Your location was changed: %f / %f ", station_location_lat, station_location_lng));
+                            intent.putExtra("station_location_lat",station_location_lat);
+                            intent.putExtra("station_location_lng",station_location_lng);
+                            intent.putExtra("stationchoosed",stationChoosed);
+                            intent.putExtra("data", linechoosed);
+                            startActivity(intent);
+
                         }
                     }
                 };
-                stationPickServices.getStations(callback,stationChoosed);*/
-                db.collection("stations").whereEqualTo("name",stationChoosed)
-                        .get()
-                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                if (task.isSuccessful()) {
-                                    for (DocumentSnapshot document : task.getResult()) {
-                                        station_location_lat=document.getGeoPoint("location").getLatitude();
-                                        station_location_lng=document.getGeoPoint("location").getLongitude();
-                                        Intent intent=new Intent(StationSearch.this,MapsActivity.class);
-                                        Log.d("locationstation", String.format("Your location was changed: %f / %f ", station_location_lat, station_location_lng));
-                                        intent.putExtra("station_location_lat",station_location_lat);
-                                        intent.putExtra("station_location_lng",station_location_lng);
-                                        intent.putExtra("stationchoosed",stationChoosed);
-                                        intent.putExtra("data", linechoosed);
-                                        startActivity(intent);
-                                    }
-                                } else {
-                                    Log.d(TAG, "Error getting documents: ", task.getException());
-                                }
-                            }
-                        });
-
+                stationPickServices.getStations(callback,stationChoosed);
             }
         });
         etSearch.addTextChangedListener(new TextWatcher() {

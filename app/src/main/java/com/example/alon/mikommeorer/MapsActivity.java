@@ -52,6 +52,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
 import com.h6ah4i.android.widget.verticalseekbar.VerticalSeekBar;
+import com.yarolegovich.lovelydialog.LovelyCustomDialog;
 
 import java.util.HashMap;
 import java.util.List;
@@ -297,6 +298,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public void onGeoQueryError(DatabaseError error) {
                 Log.e("ERROR", "" + error);
+            }
+        });
+
+        mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+            @Override
+            public void onInfoWindowClick(Marker marker) {
+                new LovelyCustomDialog(MapsActivity.this)
+                        .setTopColorRes(R.color.colorPrimary)
+                        .setTitle("Test")
+                        .setMessage("test test")
+                        .setIcon(R.drawable.ic_user_icon)
+                        .show();
             }
         });
     }
