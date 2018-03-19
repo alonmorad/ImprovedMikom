@@ -3,6 +3,9 @@ package com.example.alon.mikommeorer;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.location.Location;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -14,7 +17,7 @@ import java.security.AccessControlContext;
  * Created by alonm on 04/02/2018.
  */
 
-public class Station {
+public class Station implements Parcelable {
     private String description;
     private String linenumber;
     private GeoPoint location;
@@ -25,10 +28,10 @@ public class Station {
         this.location = location;
         this.name = name;
         this.description = description;
-        this.linenumber=linenumber;
+        this.linenumber = linenumber;
     }
 
-    public Station(){
+    public Station() {
 
     }
 
@@ -57,8 +60,9 @@ public class Station {
     }
 
     public LatLng getLocationLatLng() {
-        return new LatLng(location.getLatitude(),location.getLongitude());
+        return new LatLng(location.getLatitude(), location.getLongitude());
     }
+
     public String getLinenumber() {
         return linenumber;
     }
@@ -83,4 +87,38 @@ public class Station {
                 ", linenumber='" + linenumber + '\'' +
                 '}';
     }
+
+    public Station(Parcel in) {
+        this.description = in.readString();
+        this.name = in.readString();
+        this.linenumber = in.readString();
+        this.location = new GeoPoint(in.readDouble(), in.readDouble());
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(this.description);
+        parcel.writeString(this.name);
+        parcel.writeString(this.linenumber);
+        parcel.writeDouble(location.getLatitude());
+        parcel.writeDouble(location.getLongitude());
+        //parcel.writeDoubleArray(new double[]{this.location.getLatitude(), this.location.getLongitude()});
+    }
+
+    public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
+        public Station createFromParcel(Parcel in) {
+            return new Station(in);
+        }
+
+        @Override
+        public Station[] newArray(int i) {
+            return new Station[i];
+        }
+
+    };
 }
