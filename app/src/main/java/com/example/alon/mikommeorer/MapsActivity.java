@@ -12,6 +12,7 @@ import android.location.Location;
 import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
@@ -81,6 +82,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     FirebaseFirestore firebaseFirestore;
     GeoFire geoFire;
     Marker myCurrent;
+
+    private Station station;
 
 
 
@@ -220,10 +223,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        final String linechoosed=getIntent().getExtras().getString("data"); //tells which line was chosed in the last activity
+       /* final String linechoosed=getIntent().getExtras().getString("data"); //tells which line was chosed in the last activity
         final String stationchoosed=getIntent().getExtras().getString("stationchoosed");
         final double notif_lat=getIntent().getExtras().getDouble("station_location_lat");
-        final double notif_lng=getIntent().getExtras().getDouble("station_location_lng");
+        final double notif_lng=getIntent().getExtras().getDouble("station_location_lng");*/
+        Intent i = getIntent();
+        station = i.getParcelableExtra("station");
+        Log.d("moses", station.getLinenumber());
+
 
 
         toastMakerForGPSandInternet();
@@ -232,19 +239,19 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             public void onCallback(List<Station> stations) {
                 if (getContext()==null)
                     return;
-                for (Station station: stations)
+                for (Station station1: stations)
                 {
-                    if (station.getLinenumber().equals(linechoosed))
+                    if (station1.getLinenumber().equals(station.getLinenumber()))
                     {
-                        if (!station.getName().equals(stationchoosed))
-                        mMap.addMarker(station.toMarkerOptions(getContext()).alpha(0.65f));
+                        if (!station1.getName().equals(station.getName()))
+                            mMap.addMarker(station1.toMarkerOptions(getContext()).alpha(0.65f));
                         else
-                            mMap.addMarker(station.toMarkerOptions(getContext()).snippet("יעד"));
+                            mMap.addMarker(station1.toMarkerOptions(getContext()).snippet("יעד"));
                     }
-                    if (station.getName().equals(stationchoosed))
+                    if (station1.getName().equals(station.getName()))
                     {
                         mMap.addCircle(new CircleOptions()
-                                .center(station.getLocationLatLng())
+                                .center(station1.getLocationLatLng())
                                 .radius(500) //meters
                                 .strokeColor(Color.MAGENTA)
                                 .fillColor(0x220000FF)
@@ -267,8 +274,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.setMyLocationEnabled(true);
         //house
 
-       LatLng notification_area = new LatLng(notif_lat,notif_lng);
-        Log.d("Moses", String.format("Your location was changed: %f / %f ", notif_lat, notif_lng));
+       LatLng notification_area = new LatLng(station.getLocation().getLatitude(),station.getLocation().getLongitude());
+        Log.d("Moses", String.format("Your location was changed: %f / %f ", station.getLocation().getLatitude(), station.getLocation().getLongitude()));
         //geoquery, 0.5f=0.5k=500m, radius of circle
         GeoQuery geoQuery = geoFire.queryAtLocation(new GeoLocation(notification_area.latitude, notification_area.longitude),
                 0.5f);

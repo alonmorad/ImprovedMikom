@@ -82,10 +82,11 @@ public class StationSearch extends AppCompatActivity {
                             station_location_lng=station.getLocation().getLongitude();
                             Intent intent=new Intent(StationSearch.this,MapsActivity.class);
                             Log.d("locationstation", String.format("Your location was changed: %f / %f ", station_location_lat, station_location_lng));
-                            intent.putExtra("station_location_lat",station_location_lat);
+                            /*intent.putExtra("station_location_lat",station_location_lat);
                             intent.putExtra("station_location_lng",station_location_lng);
                             intent.putExtra("stationchoosed",stationChoosed);
-                            intent.putExtra("data", linechoosed);
+                            intent.putExtra("data", linechoosed);*/
+                            intent.putExtra("station", station);
                             startActivity(intent);
 
                         }
