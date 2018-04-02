@@ -2,8 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/ImprovedMikom.iml" filepath="$PROJECT_DIR$/ImprovedMikom.iml" />
       <module fileurl="file://C:\Users\alonm\Documents\GitHub\MikomMeorer2\MikomMeorer.iml" filepath="C:\Users\alonm\Documents\GitHub\MikomMeorer2\MikomMeorer.iml" />
-      <module fileurl="file://$PROJECT_DIR$/MikomMeorer2.iml" filepath="$PROJECT_DIR$/MikomMeorer2.iml" />
+      <module fileurl="file://C:\Users\alonm\Documents\GitHub\ImprovedMikom\MikomMeorer2.iml" filepath="C:\Users\alonm\Documents\GitHub\ImprovedMikom\MikomMeorer2.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>

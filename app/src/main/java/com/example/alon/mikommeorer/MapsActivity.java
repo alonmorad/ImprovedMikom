@@ -306,8 +306,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             public void onInfoWindowClick(Marker marker) {
                 new LovelyCustomDialog(MapsActivity.this)
                         .setTopColorRes(R.color.colorPrimary)
-                        .setTitle("Test")
-                        .setMessage("test test")
+                        .setTitle(marker.getTitle())
+                        .setMessage(marker.getSnippet())
                         .setIcon(R.drawable.ic_user_icon)
                         .show();
             }
