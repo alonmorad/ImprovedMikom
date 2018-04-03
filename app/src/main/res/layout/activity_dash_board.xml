@@ -48,8 +48,8 @@
     <Button
         android:layout_marginTop="20dp"
         android:layout_below="@+id/dashboard_btn_change_pass"
-        android:id="@+id/dashboard_btn_logout"
-        android:text="Logout"
+        android:id="@+id/dashboard_btn_toapp"
+        android:text="To App"
         android:background="#263238"
         style="@style/Widget.AppCompat.Button.Colored"
         android:layout_width="match_parent"
@@ -57,12 +57,14 @@
 
     <Button
         android:layout_marginTop="20dp"
-        android:layout_below="@+id/dashboard_btn_logout"
-        android:id="@+id/dashboard_btn_toapp"
-        android:text="To App"
+        android:layout_below="@+id/dashboard_btn_toapp"
+        android:id="@+id/dashboard_btn_logout"
+        android:text="Logout"
         android:background="#263238"
         style="@style/Widget.AppCompat.Button.Colored"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
+
+
 
 </RelativeLayout>

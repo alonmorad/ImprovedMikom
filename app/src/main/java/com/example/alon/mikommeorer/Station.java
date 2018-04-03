@@ -19,16 +19,19 @@ import java.security.AccessControlContext;
 
 public class Station implements Parcelable {
     private String description;
+    private String hours;
     private String linenumber;
     private GeoPoint location;
     private String name;
+    private String picture_url;
 
-
-    public Station(GeoPoint location, String name, String description, String linenumber) {
+    public Station(GeoPoint location, String name, String description, String linenumber, String hours, String picture_url) {
         this.location = location;
         this.name = name;
         this.description = description;
         this.linenumber = linenumber;
+        this.hours=hours;
+        this.picture_url=picture_url;
     }
 
     public Station() {
@@ -57,6 +60,22 @@ public class Station implements Parcelable {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getHours() {
+        return hours;
+    }
+
+    public void setHours(String hours) {
+        this.hours = hours;
+    }
+
+    public String getPicture_url() {
+        return picture_url;
+    }
+
+    public void setPicture_url(String picture_url) {
+        this.picture_url = picture_url;
     }
 
     public LatLng getLocationLatLng() {
@@ -92,6 +111,8 @@ public class Station implements Parcelable {
         this.description = in.readString();
         this.name = in.readString();
         this.linenumber = in.readString();
+        this.hours=in.readString();
+        this.picture_url=in.readString();
         this.location = new GeoPoint(in.readDouble(), in.readDouble());
     }
 
@@ -105,6 +126,8 @@ public class Station implements Parcelable {
         parcel.writeString(this.description);
         parcel.writeString(this.name);
         parcel.writeString(this.linenumber);
+        parcel.writeString(this.hours);
+        parcel.writeString(this.picture_url);
         parcel.writeDouble(location.getLatitude());
         parcel.writeDouble(location.getLongitude());
         //parcel.writeDoubleArray(new double[]{this.location.getLatitude(), this.location.getLongitude()});

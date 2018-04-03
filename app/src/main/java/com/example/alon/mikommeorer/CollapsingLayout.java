@@ -19,7 +19,7 @@ public class CollapsingLayout extends AppCompatActivity {
     private Station station;
 
     private FirebaseStorage storage=FirebaseStorage.getInstance();
-    StorageReference gsReference = storage.getReferenceFromUrl("gs://mikommeorer.appspot.com/יהודה הנשיא.png");
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,17 +28,19 @@ public class CollapsingLayout extends AppCompatActivity {
 
         Intent i = getIntent();
         station = i.getParcelableExtra("station");
+        StorageReference gsReference = storage.getReferenceFromUrl(station.getPicture_url());
         Toolbar toolbar = findViewById(R.id.toolbartest);
         setSupportActionBar(toolbar);
         if(getSupportActionBar() != null)
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
         imageView=findViewById(R.id.imagechange);
         textView=findViewById(R.id.tv1);
         textView2=findViewById(R.id.tv2);
         textView3=findViewById(R.id.tv3);
-        textView.setText(station.getName().toString());
-        textView2.setText(station.getDescription().toString());
-        textView3.setText(station.getLinenumber());
+        textView.setText(station.getName());
+        textView2.setText(station.getDescription());
+        textView3.setText(station.getHours());
         Glide.with(this).using(new FirebaseImageLoader()).load(gsReference).into(imageView);
     }
 }
