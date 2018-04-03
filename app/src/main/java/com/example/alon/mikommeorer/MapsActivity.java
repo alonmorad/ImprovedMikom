@@ -1,6 +1,7 @@
 package com.example.alon.mikommeorer;
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -60,6 +61,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+import dmax.dialog.SpotsDialog;
+
 import static java.security.AccessController.getContext;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback,
@@ -77,6 +80,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private static int FASTEST_INTERVAL = 3000;
     private static int DISPLACEMENT = 10;
     private MapServices services;
+    private AlertDialog alertDialog;
+    private StationPickServices stationPickServices;
 
     DatabaseReference ref;
     FirebaseFirestore firebaseFirestore;
@@ -98,6 +103,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mapFragment.getMapAsync(this);
 
         ref = FirebaseDatabase.getInstance().getReference("MyLocation");
+        stationPickServices=new StationPickServices();
         firebaseFirestore = FirebaseFirestore.getInstance();
         geoFire = new GeoFire(ref);
         VerticalSeekBar mSeekBar = findViewById(R.id.VerticalSeekBar);
@@ -311,15 +317,28 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
             @Override
             public void onInfoWindowClick(Marker marker) {
-                new LovelyCustomDialog(MapsActivity.this)
-                        .setTopColorRes(R.color.colorPrimary)
-                        .setTitle(marker.getTitle())
-                        .setMessage(marker.getSnippet())
-                        .setIcon(R.drawable.ic_user_icon)
-                        .show();
+                alertDialog=new SpotsDialog(MapsActivity.this,R.style.StationSearch);
+                alertDialog.show();
+                Callback callback = new Callback<List<Station>>()
+                {
+                    @Override
+                    public void onCallback(List<Station> stations) {
+                        alertDialog.dismiss();
+                        if (getContext()==null)
+                            return;
+                        for (Station station: stations)
+                        {
+                            Intent intent=new Intent(MapsActivity.this,CollapsingLayout.class);
+                            intent.putExtra("station", station);
+                            startActivity(intent);
+
+                        }
+                    }
+                };
+                stationPickServices.getStations(callback,marker.getTitle());
             }
         });
-    }
+            }
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     private void sendNotification(String title, String content) {

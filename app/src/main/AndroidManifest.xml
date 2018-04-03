@@ -53,8 +53,9 @@
             android:label="@string/title_activity_maps" />
         <activity
             android:name=".LineSearch"
-            android:windowSoftInputMode="stateHidden"></activity>
-        <activity android:name=".StationSearch"></activity>
+            android:windowSoftInputMode="stateHidden" />
+        <activity android:name=".StationSearch" />
+        <activity android:name=".CollapsingLayout"></activity>
     </application>
 
 </manifest>

@@ -1,6 +1,10 @@
 <resources>
     <string name="app_name">MikomMeorer</string>
     <string name="title_activity_maps">Map</string>
+    <string name="recent_news">A</string>
+    <string name="in_news">B</string>
+    <string name="publish_date">C</string>
+
     <string-array name="array_lines">
         <item>3</item>
         <item>27</item>
