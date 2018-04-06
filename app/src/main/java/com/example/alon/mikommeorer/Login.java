@@ -35,7 +35,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
-        getWindow().setBackgroundDrawableResource(R.drawable.background); //background
+        getWindow().setBackgroundDrawableResource(R.drawable.background4); //background
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN); //no keyboard on start
 
         btnLogin = (Button)findViewById(R.id.login_btn_login);

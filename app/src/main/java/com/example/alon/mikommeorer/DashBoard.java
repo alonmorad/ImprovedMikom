@@ -35,7 +35,7 @@ public class DashBoard extends AppCompatActivity implements View.OnClickListener
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dash_board);
-        getWindow().setBackgroundDrawableResource(R.drawable.background); //background
+        getWindow().setBackgroundDrawableResource(R.drawable.background4); //background
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN); //no keyboard on start
         txtWelcome = (TextView) findViewById(R.id.dashboard_welcome);
         input_new_password = (EditText) findViewById(R.id.dashboard_new_password);
