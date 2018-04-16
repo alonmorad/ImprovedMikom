@@ -1,7 +1,6 @@
 package com.example.alon.mikommeorer;
 
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -11,7 +10,6 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -51,9 +49,9 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
 
         firebaseAuth = FirebaseAuth.getInstance();
 
-        //Check already session , if ok-> DashBoard
+        //Check already session , if ok-> ChangePassword
         if(firebaseAuth.getCurrentUser() != null)
-            startActivity(new Intent(Login.this,DashBoard.class));
+            startActivity(new Intent(Login.this,ChangePassword.class));
     }
 
     @Override
@@ -99,7 +97,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                         if (task.isSuccessful())
                         {
                             finish();
-                            startActivity(new Intent(getApplicationContext(),DashBoard.class));
+                            startActivity(new Intent(getApplicationContext(),HomeActivity.class));
                         }
                         else
                             Toast.makeText(Login.this, "Wrong Email or Password. Please try again", Toast.LENGTH_SHORT).show();

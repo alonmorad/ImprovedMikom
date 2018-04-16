@@ -1,11 +1,8 @@
 package com.example.alon.mikommeorer;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 
 import com.daimajia.androidanimations.library.Techniques;
-import com.firebase.geofire.util.Constants;
 import com.viksaa.sssplash.lib.activity.AwesomeSplash;
 import com.viksaa.sssplash.lib.cnst.Flags;
 import com.viksaa.sssplash.lib.model.ConfigSplash;
@@ -50,7 +47,7 @@ public class SplashScreen extends AwesomeSplash {
 
     @Override
     public void animationsFinished() {
-        startActivity(new Intent(getApplicationContext(),GridLayout.class));
+        startActivity(new Intent(getApplicationContext(),HomeActivity.class));
         finish();
     }
 }
