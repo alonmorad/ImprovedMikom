@@ -7,6 +7,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Location;
@@ -237,6 +238,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         Intent i = getIntent();
         station = i.getParcelableExtra("station");
         Log.d("moses", station.getLinenumber());
+        SharedPreferences sharedPreferences=getSharedPreferences("settings",MODE_PRIVATE);
+        final int radius=sharedPreferences.getInt("radius",500);
 
 
 
@@ -259,7 +262,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     {
                         mMap.addCircle(new CircleOptions()
                                 .center(station1.getLocationLatLng())
-                                .radius(500) //meters
+                                .radius(radius) //meters
                                 .strokeColor(Color.MAGENTA)
                                 .fillColor(0x220000FF)
                                 .strokeWidth(5.0f));
@@ -285,7 +288,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         Log.d("Moses", String.format("Your location was changed: %f / %f ", station.getLocation().getLatitude(), station.getLocation().getLongitude()));
         //geoquery, 0.5f=0.5k=500m, radius of circle
         GeoQuery geoQuery = geoFire.queryAtLocation(new GeoLocation(notification_area.latitude, notification_area.longitude),
-                0.5f);
+                (radius/1000));
         geoQuery.addGeoQueryEventListener(new GeoQueryEventListener() {
             @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
             @Override

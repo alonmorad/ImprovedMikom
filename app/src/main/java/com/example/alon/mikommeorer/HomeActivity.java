@@ -57,7 +57,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         }
         if (view==settingsCardView)
         {
-            startActivity(new Intent(HomeActivity.this,LineSearch.class));
+            startActivity(new Intent(HomeActivity.this,SettingsActivity.class));
         }
         if (view==logout)
         {
