@@ -35,7 +35,7 @@ public class ForgotPassword extends AppCompatActivity implements View.OnClickLis
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_forgot_password);
-        getWindow().setBackgroundDrawableResource(R.drawable.background4); //background
+        getWindow().setBackgroundDrawableResource(R.drawable.bg); //background
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN); //no keyboard on start
         input_email = (EditText)findViewById(R.id.forgot_email);
         btnResetPass = (Button)findViewById(R.id.forgot_btn_reset);
@@ -71,7 +71,7 @@ public class ForgotPassword extends AppCompatActivity implements View.OnClickLis
     }
 
     private void resetPassword( final String email) {
-        alertDialog=new SpotsDialog(ForgotPassword.this,R.style.Forgot_pass);
+        alertDialog=new SpotsDialog(ForgotPassword.this,R.style.StationSearch);
         alertDialog.show();
         auth.sendPasswordResetEmail(email)
                 .addOnCompleteListener(this, new OnCompleteListener<Void>() {

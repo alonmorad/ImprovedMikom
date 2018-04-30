@@ -357,6 +357,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         builder.setContentIntent(contentIntent);
         Notification notification = builder.build();
         notification.flags |= Notification.FLAG_AUTO_CANCEL | Notification.FLAG_INSISTENT;
+        notification.defaults|=Notification.DEFAULT_SOUND;
         notification.sound= Uri.parse("android.resource://" + this.getPackageName() + "/" + R.raw.alarm_sound);
         notification.defaults |= Notification.DEFAULT_LIGHTS;
         notification.defaults |= Notification.DEFAULT_VIBRATE;

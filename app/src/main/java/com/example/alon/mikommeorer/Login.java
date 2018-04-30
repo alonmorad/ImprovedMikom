@@ -33,7 +33,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
-        getWindow().setBackgroundDrawableResource(R.drawable.background4); //background
+        getWindow().setBackgroundDrawableResource(R.drawable.bg); //background
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN); //no keyboard on start
 
         btnLogin = (Button)findViewById(R.id.login_btn_login);
@@ -51,7 +51,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
 
         //Check already session , if ok-> ChangePassword
         if(firebaseAuth.getCurrentUser() != null)
-            startActivity(new Intent(Login.this,ChangePassword.class));
+            startActivity(new Intent(Login.this,HomeActivity.class));
     }
 
     @Override
@@ -87,7 +87,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
     }
 
     private void loginUser(String email, final String password) {
-        alertDialog=new SpotsDialog(Login.this,R.style.Login);
+        alertDialog=new SpotsDialog(Login.this,R.style.StationSearch);
         alertDialog.show();
         firebaseAuth.signInWithEmailAndPassword(email,password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {

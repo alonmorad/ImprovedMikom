@@ -37,17 +37,17 @@ public class SplashScreen extends AwesomeSplash {
 
         //Customize Title
         configSplash.setTitleSplash("MikoMeorer");
-        configSplash.setTitleTextColor(R.color.colorAccent);
+        configSplash.setTitleTextColor(R.color.white);
         configSplash.setTitleTextSize(30f); //float value
         configSplash.setAnimTitleDuration(2000);
         configSplash.setAnimTitleTechnique(Techniques.FlipInX);
-        configSplash.setTitleFont("fonts/diti_sweet.ttf"); //provide string to your font located in assets/fonts/
+        configSplash.setTitleFont("fonts/Assistant-Bold.ttf"); //provide string to your font located in assets/fonts/
 
     }
 
     @Override
     public void animationsFinished() {
-        startActivity(new Intent(getApplicationContext(),HomeActivity.class));
+        startActivity(new Intent(getApplicationContext(),Login.class));
         finish();
     }
 }

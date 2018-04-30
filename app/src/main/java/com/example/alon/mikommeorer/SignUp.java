@@ -37,7 +37,7 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
-        getWindow().setBackgroundDrawableResource(R.drawable.background4); //background
+        getWindow().setBackgroundDrawableResource(R.drawable.bg); //background
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN); //no keyboard on start
         sign_up = (Button)findViewById(R.id.btn_register);
         btnLogin = (TextView)findViewById(R.id.Signup_btn_login);
@@ -85,7 +85,7 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener {
     }
 
     private void signUpUser(String email, String password) { //method for putting user data in firebase
-        alertDialog=new SpotsDialog(SignUp.this,R.style.Sign_Up);
+        alertDialog=new SpotsDialog(SignUp.this,R.style.StationSearch);
         alertDialog.show();
         auth.createUserWithEmailAndPassword(email,password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
