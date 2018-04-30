@@ -240,6 +240,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         Log.d("moses", station.getLinenumber());
         SharedPreferences sharedPreferences=getSharedPreferences("settings",MODE_PRIVATE);
         final int radius=sharedPreferences.getInt("radius",500);
+        final String sound=sharedPreferences.getString("sound","Default");
 
 
 
@@ -293,13 +294,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
             @Override
             public void onKeyEntered(String key, GeoLocation location) {
-                sendNotification("MikoMeorer", String.format("%s entered the chosen area", key));
+                sendNotification("MikoMeorer", String.format("%s entered the chosen area", key), sound);
             }
 
             @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
             @Override
             public void onKeyExited(String key) {
-                sendNotification("MikoMeorer", String.format("%s in no longer in the chosen area", key));
+                sendNotification("MikoMeorer", String.format("%s in no longer in the chosen area", key), sound);
             }
 
             @Override
@@ -345,7 +346,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
-    private void sendNotification(String title, String content) {
+    private void sendNotification(String title, String content, String sound) {
 //        alarmManager=(AlarmManager)getSystemService(Context.ALARM_SERVICE);
         Notification.Builder builder = new Notification.Builder(this)
                 .setSmallIcon(R.mipmap.ic_launcher_round)
@@ -357,7 +358,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         builder.setContentIntent(contentIntent);
         Notification notification = builder.build();
         notification.flags |= Notification.FLAG_AUTO_CANCEL | Notification.FLAG_INSISTENT;
+        if (sound=="Default")
         notification.defaults|=Notification.DEFAULT_SOUND;
+        if (sound=="Basic")
         notification.sound= Uri.parse("android.resource://" + this.getPackageName() + "/" + R.raw.alarm_sound);
         notification.defaults |= Notification.DEFAULT_LIGHTS;
         notification.defaults |= Notification.DEFAULT_VIBRATE;

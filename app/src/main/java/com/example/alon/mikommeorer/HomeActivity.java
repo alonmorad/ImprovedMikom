@@ -12,7 +12,7 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class HomeActivity extends AppCompatActivity implements View.OnClickListener {
     private GridLayout gridLayout;
-    private CardView busCardView, changeCardView, addressCardView, settingsCardView;
+    private CardView busCardView, changeCardView, settingsCardView;
     private TextView logout, welcome, username;
     private FirebaseAuth auth;
 
@@ -24,7 +24,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         gridLayout = findViewById(R.id.mainGrid);
         busCardView = findViewById(R.id.bus);
         changeCardView = findViewById(R.id.change);
-        addressCardView = findViewById(R.id.address);
         settingsCardView = findViewById(R.id.settings);
         logout = findViewById(R.id.logout);
         welcome=findViewById(R.id.welcome);
@@ -32,7 +31,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         auth = FirebaseAuth.getInstance();
         busCardView.setOnClickListener(this);
         changeCardView.setOnClickListener(this);
-        addressCardView.setOnClickListener(this);
         settingsCardView.setOnClickListener(this);
         logout.setOnClickListener(this);
         if (auth.getCurrentUser() != null)
@@ -50,10 +48,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         if (view==changeCardView)
         {
             startActivity(new Intent(HomeActivity.this,ChangePassword.class));
-        }
-        if (view==addressCardView)
-        {
-            startActivity(new Intent(HomeActivity.this,LineSearch.class));
         }
         if (view==settingsCardView)
         {

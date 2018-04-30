@@ -1,12 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:weightSum="10"
+    android:layout_centerInParent="true"
+    android:background="@drawable/bg"
     tools:context="com.example.alon.mikommeorer.SettingsActivity">
 
-    <EditText
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="2">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/welcome"
+        android:text="Settings"
+        android:textSize="34sp"
+        android:textColor="#fff"
+        android:layout_centerInParent="true"
+        />
+    </RelativeLayout>
+
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Radius"
+        android:id="@+id/radiusbutton" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Sound"
+        android:id="@+id/soundbutton"/>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp">
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/save"
+        android:text="save changes"
+        android:layout_marginLeft="20dp"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/reset"
+        android:text="reset settings"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="20dp"/>
+
+    </RelativeLayout>
+
+    <!--<EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:hint="radius"
@@ -32,7 +86,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_below="@+id/sound"
+        android:layout_below="@+id/soundtv"
         android:padding="8dp">
         <RadioButton
             android:layout_width="wrap_content"
@@ -44,7 +98,6 @@
             android:layout_height="wrap_content"
             android:text="silent"
             android:id="@+id/silent"/>
-    </RadioGroup>
+    </RadioGroup>-->
 
-
-</RelativeLayout>
+    </LinearLayout>
