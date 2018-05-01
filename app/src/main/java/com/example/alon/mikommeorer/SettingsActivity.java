@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -14,6 +15,7 @@ import android.widget.RadioButton;
 import com.yarolegovich.lovelydialog.LovelyChoiceDialog;
 import com.yarolegovich.lovelydialog.LovelyTextInputDialog;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -68,11 +70,14 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
         }
         if (view==radiusbtn)
         {
+            final int radius=sharedPreferences.getInt("radius",500);
             new LovelyTextInputDialog(SettingsActivity.this)
                     .setTopColorRes(R.color.colorPrimary)
                     .setTitle("Radius Options")
                     .setMessage("Please Type Radius(meters)")
                     .setIcon(R.drawable.ic_user_icon)
+                    .setInputType(InputType.TYPE_CLASS_NUMBER)
+                    .setHint("Current Radius: " + Integer.toString(radius))
                     .setInputFilter("Please type radius", new LovelyTextInputDialog.TextFilter() {
                         @Override
                         public boolean check(String text) {
