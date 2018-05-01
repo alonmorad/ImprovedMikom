@@ -289,7 +289,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         Log.d("Moses", String.format("Your location was changed: %f / %f ", station.getLocation().getLatitude(), station.getLocation().getLongitude()));
         //geoquery, 0.5f=0.5k=500m, radius of circle
         GeoQuery geoQuery = geoFire.queryAtLocation(new GeoLocation(notification_area.latitude, notification_area.longitude),
-                (radius/1000));
+                (radius/100));
         geoQuery.addGeoQueryEventListener(new GeoQueryEventListener() {
             @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
             @Override
@@ -365,7 +365,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         notification.defaults |= Notification.DEFAULT_LIGHTS;
         notification.defaults |= Notification.DEFAULT_VIBRATE;
         manager.notify(new Random().nextInt(), notification);
-
     }
 
     @Override
