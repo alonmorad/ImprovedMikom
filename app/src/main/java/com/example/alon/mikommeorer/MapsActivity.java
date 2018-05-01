@@ -89,6 +89,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     FirebaseFirestore firebaseFirestore;
     GeoFire geoFire;
     Marker myCurrent;
+    SharedPreferences sharedPreferences;
+    float radius;
+    String sound;
 
     private Station station;
 
@@ -237,10 +240,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         final double notif_lng=getIntent().getExtras().getDouble("station_location_lng");*/
         Intent i = getIntent();
         station = i.getParcelableExtra("station");
+        sharedPreferences=getSharedPreferences("settings",MODE_PRIVATE);
+        radius=sharedPreferences.getFloat("radius",500);
+        sound=sharedPreferences.getString("sound","Default");
+        Log.d("radius", Float.toString(radius));
+        Log.d("sound", sound);
         Log.d("moses", station.getLinenumber());
-        SharedPreferences sharedPreferences=getSharedPreferences("settings",MODE_PRIVATE);
-        final int radius=sharedPreferences.getInt("radius",500);
-        final String sound=sharedPreferences.getString("sound","Default");
 
 
 
@@ -289,7 +294,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         Log.d("Moses", String.format("Your location was changed: %f / %f ", station.getLocation().getLatitude(), station.getLocation().getLongitude()));
         //geoquery, 0.5f=0.5k=500m, radius of circle
         GeoQuery geoQuery = geoFire.queryAtLocation(new GeoLocation(notification_area.latitude, notification_area.longitude),
-                (radius/100));
+                (radius/1000));
         geoQuery.addGeoQueryEventListener(new GeoQueryEventListener() {
             @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
             @Override
@@ -358,6 +363,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         builder.setContentIntent(contentIntent);
         Notification notification = builder.build();
         notification.flags |= Notification.FLAG_AUTO_CANCEL | Notification.FLAG_INSISTENT;
+        Log.d("sound2",sound);
         if (sound=="Default")
         notification.defaults|=Notification.DEFAULT_SOUND;
         if (sound=="Basic")

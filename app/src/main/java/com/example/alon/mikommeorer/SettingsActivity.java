@@ -70,14 +70,14 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
         }
         if (view==radiusbtn)
         {
-            final int radius=sharedPreferences.getInt("radius",500);
+            final float radius=sharedPreferences.getFloat("radius",500);
             new LovelyTextInputDialog(SettingsActivity.this)
                     .setTopColorRes(R.color.colorPrimary)
                     .setTitle("Radius Options")
                     .setMessage("Please Type Radius(meters)")
                     .setIcon(R.drawable.ic_user_icon)
                     .setInputType(InputType.TYPE_CLASS_NUMBER)
-                    .setHint("Current Radius: " + Integer.toString(radius))
+                    .setHint("Current Radius: " + Float.toString(radius))
                     .setInputFilter("Please type radius", new LovelyTextInputDialog.TextFilter() {
                         @Override
                         public boolean check(String text) {
@@ -88,7 +88,7 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
                 public void onTextInputConfirmed(String text) {
                     SharedPreferences.Editor editor;
                     editor=sharedPreferences.edit();
-                    editor.putInt("radius", Integer.parseInt(text.toString()));
+                    editor.putFloat("radius", Float.parseFloat(text.toString()));
                     editor.apply();
                 }
             }).show();
@@ -97,7 +97,7 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
         {
             SharedPreferences.Editor editor;
             editor=sharedPreferences.edit();
-            editor.putInt("radius",500);
+            editor.putFloat("radius",500);
             editor.putString("sound","Default");
             editor.apply();
             startActivity(new Intent(SettingsActivity.this,HomeActivity.class));
