@@ -402,8 +402,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void toastMakerForGPSandInternet() //checks if internet connected and sets toast
     {
         if (!isNetworkConnected()) {
-            Toast.makeText(this, "No Internet Connection." +
-                    " Alarm will work but you need to press the center button to zoom to your location.", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "No Internet Connection." , Toast.LENGTH_LONG).show();
         }
     }
 
