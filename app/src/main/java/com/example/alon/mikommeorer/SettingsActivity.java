@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SettingsActivity extends AppCompatActivity implements View.OnClickListener {
-    Button save,radiusbtn,soundbtn,reset;
+    Button radiusbtn,soundbtn,reset;
     SharedPreferences sharedPreferences;
 
 
@@ -30,11 +30,9 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
         setContentView(R.layout.activity_settings);
         getWindow().setBackgroundDrawableResource(R.drawable.bg);
         sharedPreferences=getSharedPreferences("settings",MODE_PRIVATE);
-        save=findViewById(R.id.save);
         reset=findViewById(R.id.reset);
         radiusbtn=findViewById(R.id.radiusbutton);
         soundbtn=findViewById(R.id.soundbutton);
-        save.setOnClickListener(this);
         radiusbtn.setOnClickListener(this);
         soundbtn.setOnClickListener(this);
         reset.setOnClickListener(this);
@@ -43,14 +41,6 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
 
     @Override
     public void onClick(View view) {
-        if (view==save)
-        {
-           /* SharedPreferences sharedPreferences=getSharedPreferences("settings",MODE_PRIVATE);
-            SharedPreferences.Editor editor=sharedPreferences.edit();
-            editor.putInt("radius", Integer.parseInt(radius.getText().toString()));
-            editor.apply();*/
-            startActivity(new Intent(SettingsActivity.this,HomeActivity.class));
-        }
         if (view==soundbtn)
         {
             new LovelyChoiceDialog(SettingsActivity.this)
