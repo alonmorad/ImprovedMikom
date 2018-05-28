@@ -74,11 +74,13 @@ public class ChangePassword extends AppCompatActivity implements View.OnClickLis
     }
 
     private void authentication() {
+
         new LovelyTextInputDialog(ChangePassword.this)
                 .setTopColorRes(R.color.colorPrimary)
                 .setTitle("Old Password Verification")
                 .setMessage("Please Type Old Password")
                 .setIcon(R.drawable.ic_pass)
+                .setCancelable(false)
                 .setHint("Old Password")
                 .setInputFilter("Please type Old Password", new LovelyTextInputDialog.TextFilter() {
                     @Override

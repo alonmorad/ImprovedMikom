@@ -7,20 +7,22 @@ import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.GridLayout;
+import android.widget.ImageButton;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 
-import java.net.URI;
-
 public class HomeActivity extends AppCompatActivity implements View.OnClickListener {
     private GridLayout gridLayout;
     private CardView busCardView, changeCardView, settingsCardView;
-    private TextView logout, welcome, username;
+    private TextView welcome, username;
     private FirebaseAuth auth;
-    private boolean seccess=false;
+    private ImageButton menu;
+    private boolean success =false;
 
 
 
@@ -32,14 +34,15 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         busCardView = findViewById(R.id.bus);
         changeCardView = findViewById(R.id.change);
         settingsCardView = findViewById(R.id.settings);
-        logout = findViewById(R.id.logout);
+        menu=findViewById(R.id.popmenu);
         welcome=findViewById(R.id.welcome);
         username = findViewById(R.id.username);
         auth = FirebaseAuth.getInstance();
         busCardView.setOnClickListener(this);
         changeCardView.setOnClickListener(this);
         settingsCardView.setOnClickListener(this);
-        logout.setOnClickListener(this);
+        menu.setOnClickListener(this);
+        checkSystemWritePermission();
         if (auth.getCurrentUser() != null)
             username.setText(auth.getCurrentUser().getEmail());
 
@@ -57,12 +60,23 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         if (view == settingsCardView) {
             startActivity(new Intent(HomeActivity.this, SettingsActivity.class));
         }
-        if (view == logout) {
-            auth.signOut();
-            if (auth.getCurrentUser() == null) {
-                startActivity(new Intent(HomeActivity.this, Login.class));
-                finish();
-            }
+        if (view == menu)
+        {
+            PopupMenu popupMenu = new PopupMenu(HomeActivity.this,menu);
+            popupMenu.getMenuInflater().inflate(R.menu.popup_menu,popupMenu.getMenu());
+
+            popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                @Override
+                public boolean onMenuItemClick(MenuItem menuItem) {
+                    auth.signOut();
+                    if (auth.getCurrentUser() == null) {
+                        startActivity(new Intent(HomeActivity.this, Login.class));
+                        finish();
+                    }
+                    return false;
+                }
+            });
+            popupMenu.show();
         }
     }
 
@@ -71,8 +85,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             value = Settings.System.canWrite(this);
             if (value) {
-                seccess = true;
-                startService(new Intent(this, BatteryBroadcastReciever.class));
+                success = true;
+                startService(new Intent(this, BatteryService.class));
             } else {
                 Intent intent = new Intent(Settings.ACTION_MANAGE_WRITE_SETTINGS);
                 intent.setData(Uri.parse("package:" + getApplicationContext().getPackageName()));
@@ -89,8 +103,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 Boolean value = Settings.System.canWrite(this);
                 if (value) {
-                    seccess = true;
-                    startService(new Intent(this, BatteryBroadcastReciever.class));
+                    success = true;
+                    startService(new Intent(this, BatteryService.class));
                 }
             }
         }
