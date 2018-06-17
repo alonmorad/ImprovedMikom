@@ -22,12 +22,12 @@ public class BatteryService extends Service implements OnBatteryLow {
 
     BroadcastReceiver broadcastReceiver=new BroadcastReceiver() {
         @Override
-        public void onReceive(Context context, Intent intent) {
+        public void onReceive(Context context, Intent intent) { //takes current battery precentge and moves to other function
             int battery = intent.getIntExtra("level",0);
             batteryP = String.valueOf(status);
 
 
-            changeBrightness(battery);
+            changeBrightness(battery); //run function
         }
     };
 
@@ -58,8 +58,8 @@ public class BatteryService extends Service implements OnBatteryLow {
 
     @Override
     public void changeBrightness(int batterypr) {
-        if (batterypr < 60)
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        if (batterypr < 40)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) { //android version marshmello or above
                 if (Settings.System.canWrite(getApplicationContext())) ;
                 {
                     Settings.System.putInt(getContentResolver(), Settings.System.SCREEN_BRIGHTNESS_MODE,
