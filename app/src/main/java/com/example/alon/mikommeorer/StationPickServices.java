@@ -21,7 +21,7 @@ public class StationPickServices {
     private final String TAG = "Document:";
 
     public void getStations(final Callback<List<Station>> callback, String stationChoosed) {
-        db.collection("stations").whereEqualTo("name",stationChoosed)
+        db.collection("stations").whereEqualTo("name",stationChoosed) //takes the station with the same name as user pick
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override

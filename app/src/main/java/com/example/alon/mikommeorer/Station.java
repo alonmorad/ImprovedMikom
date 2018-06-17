@@ -90,7 +90,7 @@ public class Station implements Parcelable {
         this.linenumber = linenumber;
     }
 
-    public MarkerOptions toMarkerOptions(AccessControlContext context) {
+    public MarkerOptions toMarkerOptions(AccessControlContext context) { //takes station data into marker
         return new MarkerOptions()
                 .position(getLocationLatLng())
                 .title(getName())
@@ -107,7 +107,7 @@ public class Station implements Parcelable {
                 '}';
     }
 
-    public Station(Parcel in) {
+    public Station(Parcel in) { //in order to use intent parcelable
         this.description = in.readString();
         this.name = in.readString();
         this.linenumber = in.readString();

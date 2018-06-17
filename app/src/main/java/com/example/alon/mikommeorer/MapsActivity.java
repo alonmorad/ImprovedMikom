@@ -24,6 +24,7 @@ import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.SeekBar;
 import android.widget.Toast;
 
@@ -100,6 +101,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON); //keeps the screen on
         services = new MapServices();
         setContentView(R.layout.activity_maps);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
@@ -112,7 +114,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         firebaseFirestore = FirebaseFirestore.getInstance();
         geoFire = new GeoFire(ref);
         VerticalSeekBar mSeekBar = findViewById(R.id.VerticalSeekBar);
-        mSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+        mSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() { //vertical seekbar
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
                 mMap.animateCamera(CameraUpdateFactory.zoomTo(i), 2000, null);
@@ -149,7 +151,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     private void setUpLocation() {
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED && //checks device location permission if not it requests it else the actions begin
                 ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             //request Runtime permission
             ActivityCompat.requestPermissions(this, new String[]{
@@ -165,7 +167,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
     }
 
-    private void displayLocation() {
+    private void displayLocation() { //finds current location of device and zooms in
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
                 ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
@@ -202,10 +204,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private void createLocationRequest() {
         mLocationRequest = new LocationRequest();
-        mLocationRequest.setInterval(UPDATE_INTERVAL);
+        mLocationRequest.setInterval(UPDATE_INTERVAL); //קובע כל כמה שניות מתעדכן מיקום המכשיר
         mLocationRequest.setFastestInterval(FASTEST_INTERVAL);
-        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-        mLocationRequest.setSmallestDisplacement(DISPLACEMENT);
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);// קובע את רמת הדיוק של מיקום המכשיר
+        mLocationRequest.setSmallestDisplacement(DISPLACEMENT);//קובע את חריגת האי דיוק
     }
 
     private void buildGoogleApiClient() {
@@ -217,7 +219,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         googleApiClient.connect();
     }
 
-    private boolean checkPlayServices() {
+    private boolean checkPlayServices() { //checks if device supported
         int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
         if (resultCode != ConnectionResult.SUCCESS) {
             if (GooglePlayServicesUtil.isUserRecoverableError(resultCode))
@@ -242,14 +244,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         station = i.getParcelableExtra("station");
         sharedPreferences=getSharedPreferences("settings",MODE_PRIVATE);
         radius=sharedPreferences.getFloat("radius",500);
-        sound=sharedPreferences.getString("sound","Default");
+        sound=sharedPreferences.getString("sound","Default"); //שליפת הגדרות וקביעת ערכים שרירותיים במקרה והתהליך נכשל
         Log.d("radius", Float.toString(radius));
         Log.d("sound", sound);
         Log.d("moses", station.getLinenumber());
 
 
 
-        toastMakerForGPSandInternet();
+        toastMakerForGPSandInternet(); //checks if there is no internet connection
         Callback callback = new Callback<List<Station>>() {
             @Override
             public void onCallback(List<Station> stations) {
@@ -257,14 +259,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     return;
                 for (Station station1: stations)
                 {
-                    if (station1.getLinenumber().equals(station.getLinenumber()))
+                    if (station1.getLinenumber().equals(station.getLinenumber())) //all the stations with the same line number as the user pick
                     {
                         if (!station1.getName().equals(station.getName()))
                             mMap.addMarker(station1.toMarkerOptions(getContext()).alpha(0.65f));
                         else
                             mMap.addMarker(station1.toMarkerOptions(getContext()).snippet("יעד"));
                     }
-                    if (station1.getName().equals(station.getName()))
+                    if (station1.getName().equals(station.getName())) //if the station is the user pick!
                     {
                         mMap.addCircle(new CircleOptions()
                                 .center(station1.getLocationLatLng())
@@ -290,41 +292,41 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.setMyLocationEnabled(true);
         //house
 
-       LatLng notification_area = new LatLng(station.getLocation().getLatitude(),station.getLocation().getLongitude());
+       LatLng notification_area = new LatLng(station.getLocation().getLatitude(),station.getLocation().getLongitude()); //gets user station cordinates
         Log.d("Moses", String.format("Your location was changed: %f / %f ", station.getLocation().getLatitude(), station.getLocation().getLongitude()));
         //geoquery, 0.5f=0.5k=500m, radius of circle
         GeoQuery geoQuery = geoFire.queryAtLocation(new GeoLocation(notification_area.latitude, notification_area.longitude),
-                (radius/1000));
+                (radius/1000)); //creates a query circle that his center is user station and radius from settings
         geoQuery.addGeoQueryEventListener(new GeoQueryEventListener() {
             @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
             @Override
-            public void onKeyEntered(String key, GeoLocation location) {
+            public void onKeyEntered(String key, GeoLocation location) { //The location of a key now matches the query criteria.
                 sendNotification("MikoMeorer", String.format("%s entered the chosen area", key), sound);
             }
 
             @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
             @Override
-            public void onKeyExited(String key) {
+            public void onKeyExited(String key) { //The location of a key no longer matches the query criteria.
                 sendNotification("MikoMeorer", String.format("%s in no longer in the chosen area", key), sound);
             }
 
             @Override
-            public void onKeyMoved(String key, GeoLocation location) {
+            public void onKeyMoved(String key, GeoLocation location) { //The location of a key changed but the location still matches the query criteria.
                 Log.d("MOVE", String.format("%s moved within the chosen area [%f/%f]", key, location.latitude, location.latitude));
             }
 
             @Override
-            public void onGeoQueryReady() {
+            public void onGeoQueryReady() { //All current data has been loaded from the server and all initial events have been fired.
 
             }
 
             @Override
             public void onGeoQueryError(DatabaseError error) {
                 Log.e("ERROR", "" + error);
-            }
+            } //There was an error while performing this query, e.g. a violation of security rules.
         });
 
-        mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+        mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() { //info screen
             @Override
             public void onInfoWindowClick(Marker marker) {
                 alertDialog=new SpotsDialog(MapsActivity.this,R.style.StationSearch);
@@ -351,7 +353,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
-    private void sendNotification(String title, String content, String sound) {
+    private void sendNotification(String title, String content, String sound) { //אחראית על שליחת ההתראות
 //        alarmManager=(AlarmManager)getSystemService(Context.ALARM_SERVICE);
         Notification.Builder builder = new Notification.Builder(this)
                 .setSmallIcon(R.mipmap.ic_launcher_round)
@@ -362,7 +364,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         PendingIntent contentIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_IMMUTABLE);
         builder.setContentIntent(contentIntent);
         Notification notification = builder.build();
-        notification.flags |= Notification.FLAG_AUTO_CANCEL | Notification.FLAG_INSISTENT;
+        notification.flags |= Notification.FLAG_AUTO_CANCEL | Notification.FLAG_INSISTENT; //first is when user clicks on notification second is the audio will be repeated until the notification is cancelled or the notification window is opened.
         Log.d("sound2",sound);
         if (sound=="Default")
         notification.defaults|=Notification.DEFAULT_SOUND;
@@ -370,11 +372,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         notification.sound= Uri.parse("android.resource://" + this.getPackageName() + "/" + R.raw.alarm_sound);
         notification.defaults |= Notification.DEFAULT_LIGHTS;
         notification.defaults |= Notification.DEFAULT_VIBRATE;
-        manager.notify(new Random().nextInt(), notification);
+        manager.notify(new Random().nextInt(), notification); //Post a notification to be shown in the status bar. first is tag second is the notification itself
     }
 
     @Override
-    public void onLocationChanged(Location location) {
+    public void onLocationChanged(Location location) { //device location changed
         lastLocation = location;
         displayLocation();
     }
@@ -397,7 +399,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onConnectionSuspended(int i) {
         googleApiClient.connect();
-    }
+    } //gets called when your app gets disconnected from the Google Play services package (not necessarily the Internet)
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {

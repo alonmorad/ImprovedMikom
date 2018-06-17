@@ -52,7 +52,7 @@ public class StationSearch extends AppCompatActivity {
         final String linechoosed=getIntent().getExtras().getString("data");
         Callback callback = new Callback<List<Station>>() {
             @Override
-            public void onCallback(List<Station> stations) {
+            public void onCallback(List<Station> stations) { //building the list with the stations with the same linenumber in database
                 if (getContext()==null)
                     return;
                 for (Station station: stations)
@@ -97,19 +97,19 @@ public class StationSearch extends AppCompatActivity {
                 stationPickServices.getStations(callback,stationChoosed);
             }
         });
-        etSearch.addTextChangedListener(new TextWatcher() {
+        etSearch.addTextChangedListener(new TextWatcher() { //text watcher == editable with methods!
             @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) { ////runs the instant before the text is changed.
 
             }
 
             @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                StationSearch.this.adapter.getFilter().filter(charSequence);
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) { ////runs during the text change
+                StationSearch.this.adapter.getFilter().filter(charSequence); ////filters the options on the list
             }
 
             @Override
-            public void afterTextChanged(Editable editable) {
+            public void afterTextChanged(Editable editable) { //runs immediately after the text is changed.
 
             }
         });

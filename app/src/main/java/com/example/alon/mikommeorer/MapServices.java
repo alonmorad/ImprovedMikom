@@ -29,7 +29,7 @@ public class MapServices {
                         if (task.isSuccessful()) {
                             List<Station> stations = new ArrayList<>();
                             for (DocumentSnapshot document : task.getResult()) {
-                                stations.add(document.toObject(Station.class));
+                                stations.add(document.toObject(Station.class)); //each document that on the requiremnts are into station object and the added to the list
                             }
                             callback.onCallback(stations);
                         } else {

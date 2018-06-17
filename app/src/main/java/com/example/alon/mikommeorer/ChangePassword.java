@@ -51,17 +51,17 @@ public class ChangePassword extends AppCompatActivity implements View.OnClickLis
         btnBack.setOnClickListener(this);
         auth = FirebaseAuth.getInstance();
 
-        authentication();
+        authentication(); //call for dialog
     }
 
     private void changePassword(String newpassword) {
         alertDialog = new SpotsDialog(ChangePassword.this, R.style.StationSearch);
         alertDialog.show();
         FirebaseUser user = auth.getCurrentUser();
-        user.updatePassword(newpassword).addOnCompleteListener(ChangePassword.this, new OnCompleteListener<Void>() {
+        user.updatePassword(newpassword).addOnCompleteListener(ChangePassword.this, new OnCompleteListener<Void>() { //updates user's password
             @Override
             public void onComplete(@NonNull Task<Void> task) {
-                alertDialog.dismiss();
+                alertDialog.dismiss(); //loading dialog dismissed
                 if (task.isSuccessful()) {
                     Toast.makeText(ChangePassword.this, "Password changed!", Toast.LENGTH_SHORT).show();
                     startActivity(new Intent(ChangePassword.this, HomeActivity.class));
@@ -75,7 +75,7 @@ public class ChangePassword extends AppCompatActivity implements View.OnClickLis
 
     private void authentication() {
 
-        new LovelyTextInputDialog(ChangePassword.this)
+        new LovelyTextInputDialog(ChangePassword.this) //build of dialog with github library
                 .setTopColorRes(R.color.colorPrimary)
                 .setTitle("Old Password Verification")
                 .setMessage("Please Type Old Password")
@@ -92,7 +92,7 @@ public class ChangePassword extends AppCompatActivity implements View.OnClickLis
             public void onTextInputConfirmed(String text) {
                 AuthCredential credential = EmailAuthProvider
                         .getCredential(auth.getCurrentUser().getEmail(), text);
-                auth.getCurrentUser().reauthenticate(credential).addOnCompleteListener(new OnCompleteListener<Void>() {
+                auth.getCurrentUser().reauthenticate(credential).addOnCompleteListener(new OnCompleteListener<Void>() { //auth with database
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()){
@@ -100,7 +100,7 @@ public class ChangePassword extends AppCompatActivity implements View.OnClickLis
                         }
                         else {
                             Toast.makeText(ChangePassword.this,"Wrong Password. Please try again!",Toast.LENGTH_LONG).show();
-                            authentication();
+                            authentication(); //call again if password inncorrect
                         }
                     }
                 });
@@ -118,11 +118,11 @@ public class ChangePassword extends AppCompatActivity implements View.OnClickLis
         if (view.getId() == R.id.change) {
             String password2 = input_email.getText().toString().trim();
 
-            if (TextUtils.isEmpty(password2)) {
+            if (TextUtils.isEmpty(password2)) { //checks if empty
                 Toast.makeText(ChangePassword.this, "Please enter new password", Toast.LENGTH_SHORT).show();
                 return;
             }
-            changePassword(input_email.getText().toString());
+            changePassword(input_email.getText().toString()); //call for function that changes password database
         }
     }
 }

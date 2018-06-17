@@ -73,7 +73,7 @@ public class ForgotPassword extends AppCompatActivity implements View.OnClickLis
     private void resetPassword( final String email) {
         alertDialog=new SpotsDialog(ForgotPassword.this,R.style.StationSearch);
         alertDialog.show();
-        auth.sendPasswordResetEmail(email)
+        auth.sendPasswordResetEmail(email) //call function of firebase
                 .addOnCompleteListener(this, new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {

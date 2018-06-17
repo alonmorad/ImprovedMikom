@@ -27,8 +27,8 @@ public class CollapsingLayout extends AppCompatActivity {
         setContentView(R.layout.activity_collapsing_layout);
 
         Intent i = getIntent();
-        station = i.getParcelableExtra("station");
-        StorageReference gsReference = storage.getReferenceFromUrl(station.getPicture_url());
+        station = i.getParcelableExtra("station"); //getting station info with intent parcelable
+        StorageReference gsReference = storage.getReferenceFromUrl(station.getPicture_url()); //ref for firebase storage
         Toolbar toolbar = findViewById(R.id.toolbartest);
         setSupportActionBar(toolbar);
         if(getSupportActionBar() != null)
@@ -41,6 +41,6 @@ public class CollapsingLayout extends AppCompatActivity {
         textView.setText(station.getName());
         textView2.setText(station.getDescription());
         textView3.setText(station.getHours());
-        Glide.with(this).using(new FirebaseImageLoader()).load(gsReference).into(imageView);
+        Glide.with(this).using(new FirebaseImageLoader()).load(gsReference).into(imageView); //downloading the pic into imageview
     }
 }

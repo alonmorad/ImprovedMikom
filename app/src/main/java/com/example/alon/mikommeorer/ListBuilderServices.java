@@ -20,16 +20,16 @@ public class ListBuilderServices {
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
     private final String TAG = "Document:";
 
-    public void getStations(final Callback<List<Station>> callback, String userPick) {
+    public void getStations(final Callback<List<Station>> callback, String userPick) { //takes all the stations from database with the same line number the user chose
         db.collection("stations").whereEqualTo("linenumber",userPick)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
-                            List<Station> stations = new ArrayList<>();
+                            List<Station> stations = new ArrayList<>(); //new list
                             for (DocumentSnapshot document : task.getResult()) {
-                                stations.add(document.toObject(Station.class));
+                                stations.add(document.toObject(Station.class)); //each document that on the requiremnts are into station object and the added to the list
                             }
                             callback.onCallback(stations);
                         } else {

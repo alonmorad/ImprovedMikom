@@ -28,30 +28,30 @@ public class LineSearch extends AppCompatActivity {
         setContentView(R.layout.activity_line_search);
         listView=(ListView)findViewById(R.id.listViewLines);
         etSearch=(EditText)findViewById(R.id.etsearch);
-        adapter=new ArrayAdapter<String>(this,R.layout.test,R.id.textView,lines);
+        adapter=new ArrayAdapter<String>(this,R.layout.test,R.id.textView,lines); //
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) { //taking the item that was clicked and moving it with intent
                 String lineChoosed=String.valueOf(adapterView.getItemAtPosition(i));
                 Intent intent=new Intent(LineSearch.this,StationSearch.class);
                 intent.putExtra("data",lineChoosed);
                 startActivity(intent);
             }
         });
-        etSearch.addTextChangedListener(new TextWatcher() {
+        etSearch.addTextChangedListener(new TextWatcher() { //text watcher == editable with methods!
             @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) { //runs the instant before the text is changed.
 
             }
 
             @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                LineSearch.this.adapter.getFilter().filter(charSequence);
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) { //runs during the text change
+                LineSearch.this.adapter.getFilter().filter(charSequence); //filters the options on the list
             }
 
             @Override
-            public void afterTextChanged(Editable editable) {
+            public void afterTextChanged(Editable editable) { //runs immediately after the text is changed.
 
             }
         });

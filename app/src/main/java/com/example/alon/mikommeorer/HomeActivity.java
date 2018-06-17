@@ -18,10 +18,10 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class HomeActivity extends AppCompatActivity implements View.OnClickListener {
     private GridLayout gridLayout;
-    private CardView busCardView, changeCardView, settingsCardView;
+    private CardView busCardView, changeCardView, settingsCardView; //each "card"
     private TextView welcome, username;
     private FirebaseAuth auth;
-    private ImageButton menu;
+    private ImageButton menu; //logout option
     private boolean success =false;
 
 
@@ -42,10 +42,15 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         changeCardView.setOnClickListener(this);
         settingsCardView.setOnClickListener(this);
         menu.setOnClickListener(this);
-        checkSystemWritePermission();
+        checkSystemWritePermission(); //ask for permission on writing system settings
         if (auth.getCurrentUser() != null)
             username.setText(auth.getCurrentUser().getEmail());
 
+
+    }
+
+    @Override
+    public void onBackPressed() { //preventing the back button from working
 
     }
 
@@ -60,14 +65,14 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         if (view == settingsCardView) {
             startActivity(new Intent(HomeActivity.this, SettingsActivity.class));
         }
-        if (view == menu)
+        if (view == menu) //logout option
         {
             PopupMenu popupMenu = new PopupMenu(HomeActivity.this,menu);
-            popupMenu.getMenuInflater().inflate(R.menu.popup_menu,popupMenu.getMenu());
+            popupMenu.getMenuInflater().inflate(R.menu.popup_menu,popupMenu.getMenu()); //first is ref for xml, second to menu itself
 
-            popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() { //onclick
                 @Override
-                public boolean onMenuItemClick(MenuItem menuItem) {
+                public boolean onMenuItemClick(MenuItem menuItem) { //signs out and moving to logic activity
                     auth.signOut();
                     if (auth.getCurrentUser() == null) {
                         startActivity(new Intent(HomeActivity.this, Login.class));
@@ -82,7 +87,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
     private void checkSystemWritePermission() {
         Boolean value;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) { //checks if android version is marshmelo or later release
             value = Settings.System.canWrite(this);
             if (value) {
                 success = true;
